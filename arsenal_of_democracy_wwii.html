@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arsenal of Democracy – World War II</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080a0d;--bg2:#0f1218;--bg3:#161c24;--panel:#111620;--border:#1e2830;--border2:#2a3848;--amber:#e8a020;--amber2:#c07818;--amber3:#f8c850;--red:#c03030;--red2:#e04040;--green:#1a6a30;--green2:#28904a;--blue:#1a3870;--blue2:#2a5ab0;--teal:#1a7870;--teal2:#2aaa98;--text:#e8dcc8;--text2:#8a7a68;--text3:#483c30;--cream:#f0e0c8;--bebas:'Bebas Neue',sans-serif;--playfair:'Playfair Display',serif;--crimson:'Crimson Text',serif;--dm:'DM Sans',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--crimson);min-height:100vh;overflow-x:hidden;background-image:radial-gradient(ellipse at 20% 10%,rgba(232,160,32,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 90%,rgba(192,48,48,0.04) 0%,transparent 50%);}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.7;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.015) 3px,rgba(0,0,0,0.015) 4px);pointer-events:none;z-index:9999;}
+#root{max-width:620px;margin:0 auto;padding:16px;min-height:100vh;position:relative;z-index:1;}
+.screen{display:none;}.screen.active{display:block;animation:fadeIn 0.4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pop{0%{transform:scale(0.5);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-70px);}}
+@keyframes glowPulse{0%,100%{box-shadow:0 0 15px rgba(232,160,32,0.3);}50%{box-shadow:0 0 40px rgba(232,160,32,0.7);}}
+.btn{font-family:var(--bebas);font-size:15px;letter-spacing:2px;background:transparent;border:1.5px solid var(--amber);color:var(--amber);padding:12px 28px;cursor:pointer;transition:all 0.2s;display:inline-block;position:relative;overflow:hidden;text-transform:uppercase;}
+.btn::before{content:'';position:absolute;inset:0;background:var(--amber);transform:scaleX(0);transform-origin:left;transition:transform 0.2s;z-index:0;}
+.btn:hover{color:var(--bg);box-shadow:0 0 25px rgba(232,160,32,0.4);}
+.btn:hover::before{transform:scaleX(1);}
+.btn span{position:relative;z-index:1;}.btn:active{transform:scale(0.97);}
+.btn.full{display:block;width:100%;text-align:center;margin:6px 0;}
+.btn.red{border-color:var(--red2);color:var(--red2);}.btn.red::before{background:var(--red2);}.btn.red:hover{color:#fff;}
+.btn.green{border-color:var(--green2);color:var(--green2);}.btn.green::before{background:var(--green2);}.btn.green:hover{color:#fff;}
+.btn.blue{border-color:var(--blue2);color:var(--blue2);}.btn.blue::before{background:var(--blue2);}.btn.blue:hover{color:#fff;}
+.btn.sm{font-size:11px;padding:8px 18px;}.btn:disabled{opacity:0.25;cursor:not-allowed;pointer-events:none;}
+#game-header{background:linear-gradient(180deg,rgba(8,10,13,0.98),rgba(15,18,24,0.95));border-bottom:1px solid var(--border2);padding:10px 14px;display:none;position:sticky;top:0;z-index:200;margin:-16px -16px 16px -16px;backdrop-filter:blur(12px);}
+.hud-inner{display:flex;align-items:center;gap:12px;}
+.hud-avatar{width:42px;height:42px;flex-shrink:0;cursor:pointer;}
+.hud-info{flex:1;min-width:0;}
+.hud-name{font-family:var(--playfair);font-size:12px;color:var(--amber);margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic;}
+.hud-rank{font-family:var(--dm);font-size:10px;color:var(--text2);}
+.momentum-bar-wrap{height:3px;background:rgba(255,255,255,0.06);margin-top:4px;border-radius:2px;overflow:hidden;}
+.momentum-bar-fill{height:100%;background:linear-gradient(90deg,var(--amber2),var(--amber3));transition:width 0.6s;border-radius:2px;}
+.hud-stats{display:flex;gap:10px;flex-shrink:0;}
+.hud-stat{font-family:var(--dm);font-size:8px;color:var(--text3);text-align:center;}
+.hud-stat span{display:block;color:var(--amber);font-size:13px;margin-top:1px;font-weight:600;}
+.notif{position:fixed;top:80px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--amber2);padding:10px 20px;font-family:var(--dm);font-size:11px;color:var(--amber);z-index:1000;animation:pop 0.3s,floatUp 2.5s 0.8s forwards;white-space:nowrap;max-width:90vw;text-align:center;}
+.notif.green{border-color:var(--green2);color:var(--green2);}
+.notif.red{border-color:var(--red2);color:var(--red2);}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:400;overflow-y:auto;padding:20px 16px 80px;}
+.overlay.show{display:block;animation:fadeIn 0.2s;}
+.overlay-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:sticky;top:0;background:rgba(8,10,13,0.97);padding:10px 0;border-bottom:1px solid var(--border2);z-index:10;}
+.overlay-title{font-family:var(--bebas);font-size:22px;color:var(--amber);letter-spacing:2px;}
+.overlay-close{font-family:var(--dm);font-size:10px;background:var(--bg3);border:1px solid var(--border2);color:var(--text2);padding:7px 14px;cursor:pointer;transition:all 0.2s;}
+.overlay-close:hover{border-color:var(--amber);color:var(--amber);}
+.std-tag{display:inline-block;font-family:var(--dm);font-size:8px;color:var(--text3);border:1px solid var(--border2);padding:2px 6px;margin:2px;border-radius:2px;}
+.section-head{font-family:var(--bebas);font-size:18px;letter-spacing:2px;color:var(--amber);border-bottom:1px solid var(--border2);padding-bottom:6px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.section-head::before{content:'';display:block;width:3px;height:18px;background:var(--amber);}
+.char-preview{text-align:center;margin-bottom:1.5rem;padding:20px;background:var(--bg2);border:1px solid var(--border);}
+.char-avatar-display{width:100px;height:100px;margin:0 auto 12px;}
+.char-name-display{font-family:var(--playfair);font-size:18px;color:var(--cream);font-style:italic;margin-bottom:2px;}
+.char-title-display{font-family:var(--dm);font-size:11px;color:var(--teal);letter-spacing:1px;}
+.avatar-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.avatar-opt{flex:1 1 calc(25% - 8px);min-width:70px;aspect-ratio:1;background:var(--bg2);border:1.5px solid var(--border);cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 4px;}
+.avatar-opt:hover{border-color:var(--amber2);}.avatar-opt.selected{border-color:var(--amber);background:rgba(232,160,32,0.08);box-shadow:0 0 12px rgba(232,160,32,0.2);}
+.avatar-opt.locked{opacity:0.35;cursor:not-allowed;}
+.avatar-opt-label{font-family:var(--dm);font-size:8px;color:var(--text2);text-align:center;line-height:1.3;}
+.name-input{font-family:var(--playfair);font-size:16px;font-style:italic;background:var(--bg2);border:1.5px solid var(--border2);color:var(--cream);padding:12px 16px;width:100%;outline:none;margin-bottom:8px;transition:border-color 0.2s;}
+.name-input:focus{border-color:var(--amber);}.name-input::placeholder{color:var(--text3);}
+.outfit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.outfit-opt{background:var(--bg2);border:1.5px solid var(--border);padding:12px 8px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.outfit-opt:hover{border-color:var(--amber2);}.outfit-opt.selected{border-color:var(--amber);background:rgba(232,160,32,0.07);}
+.outfit-opt.locked{opacity:0.3;cursor:not-allowed;pointer-events:none;}
+.outfit-icon{font-size:28px;margin-bottom:4px;}.outfit-name{font-family:var(--dm);font-size:9px;color:var(--text2);}
+.outfit-cost{font-family:var(--bebas);font-size:10px;color:var(--amber2);margin-top:2px;}
+.hub-banner{background:var(--bg2);border:1px solid var(--border2);padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:14px;}
+.hub-avatar{width:60px;height:60px;flex-shrink:0;}
+.hub-player-name{font-family:var(--playfair);font-size:16px;color:var(--cream);font-style:italic;margin-bottom:2px;}
+.hub-player-rank{font-family:var(--dm);font-size:11px;color:var(--teal);margin-bottom:6px;}
+.hub-momentum-wrap{background:rgba(255,255,255,0.05);height:4px;border-radius:2px;}
+.hub-momentum-fill{height:100%;background:linear-gradient(90deg,var(--amber2),var(--amber3));border-radius:2px;transition:width 0.6s;}
+.unit-card{background:var(--bg2);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;transition:border-color 0.2s;}
+.unit-card.available:hover{border-color:var(--amber2);}.unit-card.locked{opacity:0.5;cursor:not-allowed;pointer-events:none;}.unit-card.completed{border-color:var(--green);}
+.unit-card.available{cursor:pointer;}
+.unit-card-header{display:flex;align-items:center;gap:12px;padding:14px 16px;}
+.unit-icon{font-size:28px;flex-shrink:0;}.unit-info{flex:1;}
+.unit-number{font-family:var(--dm);font-size:9px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;}
+.unit-name{font-family:var(--playfair);font-size:15px;color:var(--cream);margin:2px 0;}
+.unit-desc{font-family:var(--crimson);font-size:13px;color:var(--text2);font-style:italic;}
+.unit-status{font-family:var(--dm);font-size:8px;padding:4px 10px;border:1px solid;}
+.unit-status.available{color:var(--amber);border-color:var(--amber2);background:rgba(232,160,32,0.08);}
+.unit-status.locked{color:var(--text3);border-color:var(--border);}
+.unit-status.completed{color:var(--green2);border-color:var(--green);background:rgba(56,160,80,0.08);}
+.unit-progress-bar{height:2px;background:rgba(255,255,255,0.04);}
+.unit-progress-fill{height:100%;background:var(--amber2);transition:width 0.5s;}
+.badges-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.badge-pill{background:var(--bg2);border:1px solid var(--border);padding:6px 10px;display:flex;align-items:center;gap:6px;font-family:var(--dm);font-size:9px;color:var(--text2);}
+.badge-pill.earned{border-color:var(--amber2);color:var(--amber);background:rgba(232,160,32,0.06);}
+.badge-icon{font-size:16px;filter:grayscale(1);}.badge-pill.earned .badge-icon{filter:none;}
+.story-scene{position:relative;width:100%;min-height:220px;background:var(--bg2);border:1px solid var(--border2);overflow:hidden;margin-bottom:16px;}
+.story-scene-art{width:100%;height:220px;}
+.story-scene-caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(8,10,13,0.97) 0%,transparent 100%);padding:30px 16px 12px;}
+.story-location{font-family:var(--bebas);font-size:11px;color:var(--amber2);letter-spacing:2px;margin-bottom:2px;}
+.story-year{font-family:var(--playfair);font-size:20px;color:var(--cream);font-style:italic;}
+.story-text-panel{background:var(--bg2);border:1px solid var(--border);padding:18px;margin-bottom:14px;position:relative;}
+.story-text-panel::before{content:'"';font-family:var(--playfair);font-size:80px;color:rgba(232,160,32,0.08);position:absolute;top:-10px;left:10px;line-height:1;}
+.story-narrative{font-family:var(--crimson);font-size:17px;line-height:1.7;color:var(--text);}
+.story-character-name{font-family:var(--playfair);font-size:11px;color:var(--amber);font-style:italic;margin-bottom:6px;}
+.decision-header{font-family:var(--bebas);font-size:13px;letter-spacing:2px;color:var(--text3);margin-bottom:10px;text-transform:uppercase;}
+.choice-btn{display:block;width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);padding:14px 16px;cursor:pointer;text-align:left;transition:all 0.2s;margin-bottom:8px;position:relative;overflow:hidden;}
+.choice-btn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--amber);transform:scaleY(0);transition:transform 0.2s;}
+.choice-btn:hover{border-color:var(--amber2);background:rgba(232,160,32,0.04);}.choice-btn:hover::before{transform:scaleY(1);}
+.choice-btn.correct{border-color:var(--green2);background:rgba(40,144,74,0.08);animation:pop 0.3s;}.choice-btn.correct::before{background:var(--green2);transform:scaleY(1);}
+.choice-btn.incorrect{border-color:var(--red2);background:rgba(192,48,48,0.06);opacity:0.6;}.choice-btn.incorrect::before{background:var(--red2);transform:scaleY(1);}
+.choice-letter{font-family:var(--bebas);font-size:13px;color:var(--amber2);margin-right:10px;display:inline-block;width:20px;}
+.choice-text{font-family:var(--crimson);font-size:16px;line-height:1.4;}
+.feedback-panel{display:none;background:var(--bg2);border-left:3px solid var(--amber);padding:16px 16px 16px 20px;margin-bottom:14px;animation:slideUp 0.3s;}
+.feedback-panel.show{display:block;}.feedback-panel.correct{border-color:var(--green2);}.feedback-panel.incorrect{border-color:var(--red2);}
+.feedback-verdict{font-family:var(--bebas);font-size:14px;letter-spacing:2px;margin-bottom:8px;}
+.feedback-verdict.correct{color:var(--green2);}.feedback-verdict.incorrect{color:var(--red2);}
+.feedback-text{font-family:var(--crimson);font-size:16px;line-height:1.6;color:var(--text);margin-bottom:8px;}
+.feedback-standard{font-family:var(--dm);font-size:9px;color:var(--text3);border-top:1px solid var(--border);padding-top:8px;margin-top:8px;}
+.momentum-display{display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--border);padding:10px 14px;margin-bottom:14px;}
+.momentum-label{font-family:var(--bebas);font-size:11px;color:var(--text3);letter-spacing:2px;flex-shrink:0;}
+.momentum-track{flex:1;height:6px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;}
+.momentum-track-fill{height:100%;background:linear-gradient(90deg,var(--amber2),var(--amber3));border-radius:3px;transition:width 0.5s;}
+.momentum-val{font-family:var(--playfair);font-size:13px;color:var(--amber);font-style:italic;flex-shrink:0;min-width:50px;text-align:right;}
+.chapter-complete-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:500;padding:20px;overflow-y:auto;text-align:center;}
+.chapter-complete-overlay.show{display:block;animation:fadeIn 0.4s;}
+.complete-badge-display{width:100px;height:100px;margin:0 auto 16px;border:2px solid var(--amber);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;animation:glowPulse 2s infinite;background:var(--bg2);}
+.card-earned{background:var(--bg2);border:1px solid var(--amber2);padding:16px;margin:16px auto;max-width:280px;text-align:center;position:relative;}
+.card-earned::before{content:'';position:absolute;inset:4px;border:1px solid rgba(232,160,32,0.2);pointer-events:none;}
+.lb-table{width:100%;border-collapse:collapse;}
+.lb-table th{font-family:var(--bebas);font-size:10px;color:var(--text3);letter-spacing:2px;padding:8px 6px;border-bottom:1px solid var(--border2);text-align:left;}
+.lb-table td{padding:10px 6px;border-bottom:1px solid var(--border);vertical-align:middle;}
+.lb-table tr.lb-you td{background:rgba(232,160,32,0.05);}
+.lb-name{font-family:var(--playfair);font-size:13px;color:var(--cream);font-style:italic;}
+.lb-score{font-family:var(--bebas);font-size:16px;color:var(--amber);letter-spacing:1px;}
+.lb-tab{font-family:var(--dm);font-size:9px;padding:6px 12px;cursor:pointer;border:1px solid var(--border2);background:var(--bg3);color:var(--text3);transition:all .15s;}
+.lb-tab.active{border-color:var(--amber);color:var(--amber);background:rgba(232,160,32,.08);}
+.profile-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.profile-stat{background:var(--bg2);border:1px solid var(--border);padding:12px;text-align:center;}
+.profile-stat-val{font-family:var(--bebas);font-size:26px;color:var(--amber);letter-spacing:1px;}
+.profile-stat-lbl{font-family:var(--dm);font-size:8px;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.badge-item{background:var(--bg2);border:1px solid var(--border);padding:10px 6px;text-align:center;}
+.badge-item.earned{border-color:var(--amber2);}
+.badge-item-icon{font-size:24px;margin-bottom:4px;}
+.badge-item-name{font-family:var(--dm);font-size:7px;color:var(--text2);line-height:1.3;}
+.badge-item:not(.earned){opacity:0.3;filter:grayscale(1);}
+#bottom-nav{background:var(--bg2);border-top:1px solid var(--border2);padding:5px;display:none;grid-template-columns:repeat(5,1fr);gap:3px;position:sticky;bottom:0;z-index:200;margin:16px -16px -16px -16px;}
+.bn-btn{font-family:var(--dm);font-size:8px;background:transparent;border:1px solid transparent;color:var(--text3);padding:8px 3px;cursor:pointer;text-align:center;transition:all 0.15s;}
+.bn-btn:hover{color:var(--text);}.bn-btn.active{color:var(--amber);border-color:rgba(232,160,32,0.2);background:rgba(232,160,32,0.05);}
+.bn-icon{font-size:16px;display:block;margin-bottom:2px;}
+.loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9000;transition:opacity 0.5s;}
+.loading-bar-wrap{width:200px;height:2px;background:var(--border2);margin-top:20px;}
+.loading-bar-fill{height:100%;background:var(--amber);transition:width 0.3s;width:0%;}
+.beat-progress{display:flex;gap:4px;margin-bottom:12px;}
+.beat-pip{flex:1;height:3px;background:var(--border2);border-radius:2px;transition:background 0.3s;}
+.beat-pip.done{background:var(--green2);}.beat-pip.current{background:var(--amber);}
+.game-logo{font-family:var(--bebas);font-size:clamp(32px,7vw,52px);color:var(--amber);letter-spacing:4px;text-shadow:0 0 40px rgba(232,160,32,0.4),3px 3px 0 rgba(0,0,0,0.5);line-height:1;margin-bottom:4px;}
+.game-subtitle{font-family:var(--playfair);font-size:14px;color:var(--text2);font-style:italic;margin-bottom:6px;letter-spacing:1px;}
+.game-unit-badge{display:inline-block;background:rgba(232,160,32,0.1);border:1px solid var(--amber2);color:var(--amber);font-family:var(--dm);font-size:9px;padding:4px 12px;letter-spacing:2px;margin-bottom:1.5rem;text-transform:uppercase;}
+.title-scene{position:relative;width:100%;height:200px;margin-bottom:1.5rem;overflow:hidden;border:1px solid var(--border2);}
+.scene-svg{width:100%;height:100%;}
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.coll-card{background:var(--bg2);border:1px solid var(--amber2);padding:12px;text-align:center;position:relative;}
+.coll-card::before{content:'';position:absolute;inset:3px;border:1px solid rgba(232,160,32,0.15);pointer-events:none;}
+.coll-card-figure{font-size:36px;margin-bottom:6px;}
+.coll-card-name{font-family:var(--playfair);font-size:12px;color:var(--cream);font-style:italic;margin-bottom:3px;}
+.coll-card-desc{font-family:var(--crimson);font-size:12px;color:var(--text2);line-height:1.4;}
+.coll-card:not(.unlocked){opacity:0.25;filter:grayscale(1);}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+</style>
+</head>
+<body>
+<div id="loading-screen" class="loading-screen">
+  <div style="font-family:var(--bebas);font-size:28px;color:var(--amber);letter-spacing:4px">ARSENAL OF DEMOCRACY</div>
+  <div style="font-family:var(--playfair);font-size:13px;color:var(--text2);margin-top:6px;font-style:italic">Entering the World War II Era...</div>
+  <div class="loading-bar-wrap"><div id="loading-bar" class="loading-bar-fill"></div></div>
+</div>
+<div id="root">
+<div id="game-header">
+  <div class="hud-inner">
+    <div class="hud-avatar" id="hud-avatar-el" onclick="openProfile()"></div>
+    <div class="hud-info">
+      <div class="hud-name" id="hud-name">Your Name</div>
+      <div class="hud-rank" id="hud-rank">Curious Citizen</div>
+      <div class="momentum-bar-wrap"><div class="momentum-bar-fill" id="hud-momentum-bar" style="width:70%"></div></div>
+    </div>
+    <div class="hud-stats">
+      <div class="hud-stat">SCORE<span id="hud-score">0</span></div>
+      <div class="hud-stat">LEVEL<span id="hud-level">1</span></div>
+      <div class="hud-stat">CARDS<span id="hud-cards">0</span></div>
+      <div class="hud-stat">GOLD<span id="hud-gold" style="color:var(--amber3)">0</span></div>
+    </div>
+  </div>
+</div>
+<div id="title-screen" class="screen active" style="text-align:center;padding:2rem 1rem;">
+  <div class="title-scene" id="title-scene-art"></div>
+  <div class="game-logo">Arsenal of Democracy</div>
+  <div class="game-subtitle">World War II - An Interactive History</div>
+  <div class="game-unit-badge">Unit 5A - World War II</div>
+  <div style="margin-bottom:1.2rem;font-family:var(--dm);font-size:10px;color:var(--text3);letter-spacing:1px">CREATED BY JOSHUA OLSON</div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;max-width:300px;margin:0 auto">
+    <button class="btn full" onclick="startNewGame()"><span>Enter the War</span></button>
+    <button class="btn full blue" id="btn-continue" onclick="continueGame()" style="display:none"><span>Continue</span></button>
+    <button class="btn full" style="border-color:var(--border2);color:var(--text2)" onclick="openLeaderboard()"><span>Leaderboard</span></button>
+    <div id="teacher-login-box" style="display:none;margin-top:8px">
+      <input id="teacher-code-input" type="password" maxlength="10" style="font-family:var(--bebas);font-size:16px;letter-spacing:3px;background:var(--bg2);border:1.5px solid var(--teal);color:var(--cream);padding:10px 14px;width:100%;outline:none;text-align:center;text-transform:uppercase;margin-bottom:6px" placeholder="ENTER CODE" onkeydown="if(event.key==='Enter')submitTeacherCode()">
+      <button class="btn full" style="border-color:var(--teal);color:var(--teal)" onclick="submitTeacherCode()"><span>Login as Teacher</span></button>
+      <div id="teacher-code-err" style="font-family:var(--dm);font-size:10px;color:var(--red2);min-height:14px;margin-top:4px"></div>
+    </div>
+    <button class="btn full" style="border-color:var(--teal);color:var(--teal);font-size:11px;margin-top:6px" onclick="document.getElementById('teacher-login-box').style.display=document.getElementById('teacher-login-box').style.display==='none'?'block':'none'"><span>Teacher Login</span></button>
+  </div>
+  <div style="margin-top:2rem;font-family:var(--dm);font-size:9px;color:var(--text3);line-height:2">FLORIDA EOC ALIGNED - U.S. HISTORY<br><span style="opacity:0.5">Joshua Olson - All Rights Reserved</span></div>
+</div>
+<div id="char-screen" class="screen" style="padding:1rem 0;">
+  <div class="section-head">Choose Your Role</div>
+  <div class="char-preview"><div class="char-avatar-display" id="char-preview-avatar"></div><div class="char-name-display" id="char-preview-name">Your Name</div><div class="char-title-display" id="char-preview-title">Presidential Advisor - 1939</div></div>
+  <div class="section-head" style="font-size:14px;margin-bottom:10px;">Select Your Persona</div>
+  <div class="avatar-grid" id="avatar-grid"></div>
+  <div class="section-head" style="font-size:14px;margin:14px 0 8px;">Your Name</div>
+  <input type="text" class="name-input" id="name-input" placeholder="Enter your name..." maxlength="28" oninput="updateCharPreview()">
+  <div class="section-head" style="font-size:14px;margin:14px 0 8px;">Starting Outfit</div>
+  <div class="outfit-grid" id="outfit-grid-creator"></div>
+  <button class="btn full green" onclick="confirmCharacter()" style="margin-top:12px"><span>Enter World War II</span></button>
+</div>
+<div id="hub-screen" class="screen" style="padding-bottom:20px;">
+  <div class="hub-banner">
+    <div class="hub-avatar" id="hub-avatar"></div>
+    <div style="flex:1"><div class="hub-player-name" id="hub-player-name">Historian</div><div class="hub-player-rank" id="hub-player-rank">Curious Citizen</div><div class="hub-momentum-wrap"><div class="hub-momentum-fill" id="hub-momentum-fill" style="width:70%"></div></div></div>
+    <div style="text-align:right"><div style="font-family:var(--bebas);font-size:22px;color:var(--amber)" id="hub-score-display">0</div><div style="font-family:var(--dm);font-size:8px;color:var(--text3)">TOTAL SCORE</div></div>
+  </div>
+  <div class="badges-row" id="hub-badges-row"></div>
+  <div class="section-head">Unit 5A - World War II</div>
+  <div id="chapter-list"></div>
+  <div style="margin-top:16px;background:var(--bg2);border:1px solid var(--border);padding:14px;">
+    <div style="font-family:var(--bebas);font-size:11px;color:var(--text3);letter-spacing:2px;margin-bottom:8px">UNIT FOCUS QUESTION</div>
+    <div style="font-family:var(--playfair);font-size:15px;color:var(--cream);font-style:italic;line-height:1.5">"When is war justified - and what obligations does a powerful nation owe the world?"</div>
+  </div>
+  <button class="btn full" style="margin-top:12px;border-color:var(--border2);color:var(--text2);font-size:11px" onclick="replayGame()"><span>Replay from Beginning</span></button>
+</div>
+<div id="chapter-intro" class="screen">
+  <div style="font-family:var(--dm);font-size:9px;color:var(--text3);letter-spacing:2px;margin-bottom:6px" id="chapter-num-display">CHAPTER 1</div>
+  <div style="font-family:var(--playfair);font-size:22px;color:var(--cream);margin-bottom:4px;line-height:1.2" id="chapter-name-display">Chapter Title</div>
+  <div style="font-family:var(--bebas);font-size:11px;color:var(--teal2);letter-spacing:2px;margin-bottom:16px" id="chapter-period-display">Europe - 1939</div>
+  <div id="chapter-intro-scene" style="margin-bottom:16px;border:1px solid var(--border2)"></div>
+  <div style="background:var(--bg2);border:1px solid var(--border);padding:16px;margin-bottom:14px;">
+    <div style="font-family:var(--bebas);font-size:11px;color:var(--text3);letter-spacing:2px;margin-bottom:8px">CONTEXT</div>
+    <div style="font-family:var(--crimson);font-size:16px;line-height:1.65;color:var(--text2)" id="chapter-context"></div>
+  </div>
+  <div style="margin-bottom:14px" id="chapter-standards-display"></div>
+  <div class="section-head" style="font-size:13px">Key Vocabulary</div>
+  <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px" id="chapter-key-vocab"></div>
+  <button class="btn full" onclick="startChapter()"><span>Begin Chapter</span></button>
+  <button class="btn full" style="border-color:var(--border2);color:var(--text2);margin-top:4px" onclick="showScreen('hub-screen')"><span>Back to Hub</span></button>
+</div>
+<div id="story-screen" class="screen">
+  <div class="beat-progress" id="beat-progress"></div>
+  <div class="story-scene"><div class="story-scene-art" id="story-scene-art"></div><div class="story-scene-caption"><div class="story-location" id="story-location">Location</div><div class="story-year" id="story-year">1941</div></div></div>
+  <div class="story-text-panel"><div class="story-character-name" id="story-char-name"></div><div class="story-narrative" id="story-narrative"></div></div>
+  <div class="momentum-display"><div class="momentum-label">RESOLVE</div><div class="momentum-track"><div class="momentum-track-fill" id="story-momentum-fill" style="width:70%"></div></div><div class="momentum-val" id="story-momentum-val">70/100</div></div>
+  <div class="decision-header" id="decision-header">YOUR DECISION</div>
+  <div id="choices-container"></div>
+  <div class="feedback-panel" id="feedback-panel"></div>
+  <button class="btn full" id="next-btn" onclick="nextStoryBeat()" style="display:none"><span>Continue</span></button>
+</div>
+<div class="overlay" id="lb-overlay">
+  <div class="overlay-header"><div class="overlay-title">Leaderboard</div><button class="overlay-close" onclick="document.getElementById('lb-overlay').classList.remove('show')">CLOSE</button></div>
+  <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap" id="lb-period-tabs"></div>
+  <div id="lb-content"></div>
+</div>
+<div class="overlay" id="profile-overlay">
+  <div class="overlay-header"><div class="overlay-title">Your Profile</div><button class="overlay-close" onclick="closeProfile()">CLOSE</button></div>
+  <div id="profile-avatar-large" style="text-align:center;margin-bottom:16px"></div>
+  <div class="profile-stat-grid" id="profile-stat-grid"></div>
+  <div class="section-head" style="font-size:14px">Outfits</div>
+  <div class="outfit-grid" id="profile-outfit-grid" style="margin-bottom:16px"></div>
+  <div class="section-head" style="font-size:14px">Badges</div>
+  <div class="badge-grid" id="profile-badge-grid" style="margin-bottom:16px"></div>
+  <div class="section-head" style="font-size:14px">Historical Figures</div>
+  <div class="card-grid" id="profile-card-grid"></div>
+</div>
+<div class="overlay" id="timeline-overlay">
+  <div class="overlay-header"><div class="overlay-title">WWII Timeline</div><button class="overlay-close" onclick="document.getElementById('timeline-overlay').classList.remove('show')">CLOSE</button></div>
+  <div style="font-family:var(--dm);font-size:10px;color:var(--text2);margin-bottom:16px" id="tl-progress">0/0 events unlocked</div>
+  <div id="tl-track"></div>
+</div>
+<div class="overlay" id="cardcoll-overlay">
+  <div class="overlay-header"><div class="overlay-title">Historical Figures</div><button class="overlay-close" onclick="document.getElementById('cardcoll-overlay').classList.remove('show')">CLOSE</button></div>
+  <div style="font-family:var(--crimson);font-size:15px;color:var(--text2);margin-bottom:16px;font-style:italic">Collect historical figures by completing chapters.</div>
+  <div class="card-grid" id="cardcoll-grid"></div>
+</div>
+<div id="teacher-dashboard" class="overlay">
+  <div class="overlay-header">
+    <div class="overlay-title">Teacher Dashboard</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button onclick="resetAllScores()" style="font-family:var(--dm);font-size:9px;background:transparent;border:1px solid var(--red2);color:var(--red2);padding:6px 10px;cursor:pointer">RESET ALL</button>
+      <button class="overlay-close" onclick="document.getElementById('teacher-dashboard').classList.remove('show')">CLOSE</button>
+    </div>
+  </div>
+  <div style="font-family:var(--dm);font-size:9px;color:var(--text3);letter-spacing:2px;margin-bottom:12px" id="td-sync-status">Loading...</div>
+  <div style="display:flex;gap:6px;margin-bottom:14px" id="td-period-tabs"></div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px" id="td-summary"></div>
+  <div class="section-head" style="font-size:13px;margin-bottom:10px">Completion by chapter</div>
+  <div id="td-chapter-bars" style="margin-bottom:16px"></div>
+  <div class="section-head" style="font-size:13px;margin-bottom:10px">Student roster</div>
+  <div id="td-roster"></div>
+</div>
+<div id="code-gate-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:1000;align-items:center;justify-content:center;">
+  <div style="background:var(--bg2);border:1px solid var(--amber2);padding:28px 24px;max-width:360px;width:100%;text-align:center">
+    <div id="login-step-1">
+      <div style="font-family:var(--bebas);font-size:22px;color:var(--amber);letter-spacing:3px;margin-bottom:6px">SELECT YOUR TEACHER</div>
+      <div style="font-family:var(--crimson);font-size:14px;color:var(--text2);font-style:italic;margin-bottom:20px">Who is your US History teacher?</div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
+        <div onclick="selectTeacher('olson')" style="padding:14px;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg3)"><div style="font-family:var(--bebas);font-size:20px;color:var(--amber)">Mr. Olson</div></div>
+        <div onclick="selectTeacher('smith')" style="padding:14px;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg3)"><div style="font-family:var(--bebas);font-size:20px;color:var(--amber)">Mrs. Smith</div></div>
+        <div onclick="selectTeacher('guest')" style="padding:14px;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg3)"><div style="font-family:var(--bebas);font-size:16px;color:var(--text2)">Guest / Other</div></div>
+      </div>
+      <button class="btn full" style="border-color:var(--border2);color:var(--text3);font-size:11px" onclick="document.getElementById('code-gate-overlay').style.display='none'"><span>Cancel</span></button>
+    </div>
+    <div id="login-step-2" style="display:none">
+      <div style="font-family:var(--bebas);font-size:22px;color:var(--amber);letter-spacing:3px;margin-bottom:6px">SELECT YOUR PERIOD</div>
+      <div id="period-buttons" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px"></div>
+      <button class="btn full" style="border-color:var(--border2);color:var(--text3);font-size:11px" onclick="goToStep(1)"><span>Back</span></button>
+    </div>
+    <div id="login-step-3" style="display:none">
+      <div style="font-family:var(--bebas);font-size:22px;color:var(--amber);letter-spacing:3px;margin-bottom:6px">ENTER YOUR NAME</div>
+      <div id="login-step3-label" style="font-family:var(--crimson);font-size:14px;color:var(--text2);font-style:italic;margin-bottom:16px"></div>
+      <input id="class-code-input" type="text" maxlength="30" style="font-family:var(--playfair);font-size:16px;background:var(--bg3);border:1.5px solid var(--border2);color:var(--cream);padding:12px 16px;width:100%;outline:none;text-align:center;margin-bottom:6px" placeholder="Your name" onkeydown="if(event.key==='Enter')submitClassCode()">
+      <div id="code-error" style="font-family:var(--dm);font-size:10px;color:var(--red2);min-height:16px;margin-bottom:10px;text-align:left"></div>
+      <button class="btn full green" onclick="submitClassCode()"><span>Enter the War</span></button>
+      <button class="btn full" style="border-color:var(--border2);color:var(--text3);font-size:11px;margin-top:6px" onclick="goToStep(2)"><span>Back</span></button>
+    </div>
+  </div>
+</div>
+<div class="chapter-complete-overlay" id="chapter-complete-overlay">
+  <div style="max-width:400px;margin:0 auto;padding:20px 0">
+    <div class="complete-badge-display" id="ch-complete-badge">*</div>
+    <div style="font-family:var(--bebas);font-size:11px;color:var(--text3);letter-spacing:3px;margin-bottom:6px">CHAPTER COMPLETE</div>
+    <div style="font-family:var(--playfair);font-size:22px;color:var(--cream);margin-bottom:8px;font-style:italic" id="ch-complete-title"></div>
+    <div style="font-family:var(--bebas);font-size:18px;color:var(--amber);letter-spacing:2px;margin-bottom:16px" id="ch-complete-score"></div>
+    <div id="ch-card-earned" class="card-earned" style="display:none">
+      <div style="font-family:var(--dm);font-size:8px;color:var(--amber2);letter-spacing:2px;margin-bottom:8px">HISTORICAL FIGURE UNLOCKED</div>
+      <div style="font-size:48px;margin-bottom:8px" id="ch-card-figure"></div>
+      <div style="font-family:var(--playfair);font-size:14px;color:var(--cream);font-style:italic;margin-bottom:4px" id="ch-card-name"></div>
+      <div style="font-family:var(--crimson);font-size:13px;color:var(--text2);line-height:1.4" id="ch-card-desc"></div>
+    </div>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-left:3px solid var(--amber2);padding:16px;margin:16px 0;text-align:left">
+      <div style="font-family:var(--crimson);font-size:15px;color:var(--text2);font-style:italic;line-height:1.6" id="ch-complete-quote"></div>
+    </div>
+    <button class="btn full" onclick="finishChapter()"><span>Return to Hub</span></button>
+  </div>
+</div>
+<div id="bottom-nav">
+  <button class="bn-btn active" onclick="showScreen('hub-screen');setActiveNav(0)"><span class="bn-icon">&#127968;</span>Hub</button>
+  <button class="bn-btn" onclick="openLeaderboard()"><span class="bn-icon">&#127942;</span>Ranks</button>
+  <button class="bn-btn" onclick="openProfile()"><span class="bn-icon">&#127894;</span>Profile</button>
+  <button class="bn-btn" onclick="openTimeline()"><span class="bn-icon">&#128197;</span>Timeline</button>
+  <button class="bn-btn" onclick="openCardCollection()"><span class="bn-icon">&#127183;</span>Cards</button>
+</div>
+</div>
+<script>
+
+
+'use strict';
+const SAVE_KEY='arsenal_democracy_v1';
+const SUPA_URL='https://iluvuartxsenbgylogit.supabase.co';
+const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsdXZ1YXJ0eHNlbmJneWxvZ2l0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NjA2OTIsImV4cCI6MjA4OTQzNjY5Mn0.stAmdi5xy7ofDAB4AiRg78Eoky-7FXZEa-Ui1dgwHd0';
+const SUPA_HEADERS={'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY};
+const TEACHERS={'olson':{name:'Mr. Olson',periods:['3','5','6'],teacherCode:'OLSON219'},'smith':{name:'Mrs. Smith',periods:['1','2','3','4','6','7'],teacherCode:'SMITH225'}};
+let G=null,currentChapterIdx=0,currentBeatIdx=0,chapterScore=0,chapterCorrect=0,chapterTotal=0,answeredCurrent=false,chapterLog=[];
+
+const AVATAR_ERAS=[{id:'leadership',label:'Leadership'},{id:'homefront',label:'Home Front'},{id:'military',label:'Military'},{id:'press',label:'Press & Diplomacy'}];
+const AVATARS=[
+  {id:'advisor',era:'leadership',label:'Presidential Advisor',badge:'&#127963;',desc:'Counseling FDR on war policy'},
+  {id:'diplomat',era:'press',label:'Diplomat',badge:'&#127760;',desc:'Navigating Allied alliances'},
+  {id:'factory_worker',era:'homefront',label:'Factory Worker',badge:'&#9881;',desc:'Building the Arsenal of Democracy'},
+  {id:'soldier',era:'military',label:'GI Soldier',badge:'&#129686;',desc:'Fighting on two fronts',unlockScore:500},
+  {id:'war_correspondent',era:'press',label:'War Correspondent',badge:'&#128240;',desc:'Reporting from the front',unlockScore:800},
+  {id:'civil_rights',era:'homefront',label:'Double V Activist',badge:'&#9994;',desc:'Fighting for the Double V',unlockScore:1500},
+  {id:'woman_worker',era:'homefront',label:'Rosie the Riveter',badge:'&#128295;',desc:'Keeping production running',unlockScore:2500},
+  {id:'general',era:'military',label:'Allied Commander',badge:'&#11088;',desc:'Planning the final campaigns',unlockScore:4000},
+];
+const STYLES={
+  advisor:{skin:'#c49a6c',top:'#2a3a5a',bot:'#1a1a2a',hair:'#1a0a00'},
+  diplomat:{skin:'#b08060',top:'#1a2a4a',bot:'#1a1a1a',hair:'#0a0500'},
+  factory_worker:{skin:'#8B5E3C',top:'#2a1a0a',bot:'#1a1a1a',hair:'#0a0500'},
+  soldier:{skin:'#c49a6c',top:'#3a4a20',bot:'#2a3010',hair:'#1a1000'},
+  war_correspondent:{skin:'#c0907a',top:'#1a1a2a',bot:'#0d0d0d',hair:'#100800'},
+  civil_rights:{skin:'#5a3010',top:'#1a1a3a',bot:'#0a0a1a',hair:'#050202'},
+  woman_worker:{skin:'#c49a6c',top:'#1a2a6b',bot:'#1a1a2a',hair:'#0a0505'},
+  general:{skin:'#b08060',top:'#2a3a20',bot:'#1a2010',hair:'#2a1a00'},
+};
+function makeAvatar(id){
+  const s=STYLES[id]||STYLES.advisor;
+  const topColor=s.top;
+  return `<svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;image-rendering:pixelated">
+    <rect x="14" y="2" width="12" height="12" fill="${s.skin}"/>
+    <rect x="12" y="4" width="2" height="8" fill="${s.skin}"/>
+    <rect x="26" y="4" width="2" height="8" fill="${s.skin}"/>
+    <rect x="15" y="0" width="10" height="5" fill="${s.hair}"/>
+    <rect x="14" y="2" width="2" height="3" fill="${s.hair}"/>
+    <rect x="24" y="2" width="2" height="3" fill="${s.hair}"/>
+    <rect x="16" y="8" width="2" height="2" fill="#1a0a00" opacity="0.8"/>
+    <rect x="22" y="8" width="2" height="2" fill="#1a0a00" opacity="0.8"/>
+    <rect x="17" y="11" width="6" height="1" fill="#8b3a2a" opacity="0.7"/>
+    <rect x="11" y="14" width="18" height="14" fill="${topColor}"/>
+    <rect x="8" y="14" width="4" height="12" fill="${s.skin}"/>
+    <rect x="28" y="14" width="4" height="12" fill="${s.skin}"/>
+    <rect x="13" y="28" width="7" height="14" fill="${s.bot}"/>
+    <rect x="20" y="28" width="7" height="14" fill="${s.bot}"/>
+    <rect x="12" y="40" width="8" height="4" fill="#1a1a1a"/>
+    <rect x="20" y="40" width="8" height="4" fill="#1a1a1a"/>
+  </svg>`;
+}
+
+const OUTFITS=[
+  {id:'civilian',name:'Civilian',icon:'&#128084;',cost:0,desc:'Before the war'},
+  {id:'uniform',name:'Army Uniform',icon:'&#129686;',cost:200,desc:'Overseas service',unlockChapter:1},
+  {id:'factory',name:'Factory Overalls',icon:'&#9881;',cost:350,desc:'Arsenal of Democracy',unlockChapter:2},
+  {id:'dress',name:"Diplomat's Dress",icon:'&#127760;',cost:500,desc:'Allied conferences',unlockChapter:3},
+  {id:'general_uniform',name:'General Staff',icon:'&#11088;',cost:800,desc:'Command the campaign',unlockChapter:4},
+];
+const BADGES=[
+  {id:'first_briefing',icon:'&#128203;',name:'First Briefing',desc:'Complete Chapter 1'},
+  {id:'neutrality_broken',icon:'&#127754;',name:'Neutrality Broken',desc:'Complete Chapter 1'},
+  {id:'arsenal',icon:'&#9881;',name:'Arsenal Built',desc:'Complete Chapter 2'},
+  {id:'two_fronts',icon:'&#9876;',name:'Two Fronts',desc:'Complete Chapter 3'},
+  {id:'liberation',icon:'&#128375;',name:'Liberation',desc:'Complete Chapter 4'},
+  {id:'new_world',icon:'&#127963;',name:'New World Order',desc:'Complete Chapter 5'},
+  {id:'unit_complete',icon:'&#127894;',name:'Unit 5A Complete',desc:'Complete all chapters'},
+  {id:'perfect_chapter',icon:'&#128175;',name:'Perfect Chapter',desc:'100% on any chapter'},
+  {id:'historian',icon:'&#128214;',name:'Historian',desc:'Earn all cards'},
+  {id:'score_1000',icon:'&#11088;',name:'Rising Analyst',desc:'Reach 1,000 points'},
+  {id:'score_5000',icon:'&#127775;',name:'Senior Advisor',desc:'Reach 5,000 points'},
+];
+const CARDS=[
+  {id:'fdr',figure:'&#127913;',name:'Franklin D. Roosevelt',desc:'32nd President. Led America through Depression and WWII. Died April 1945, weeks before Germany surrendered.',quote:'"The only thing we have to fear is fear itself."'},
+  {id:'churchill',figure:'&#128684;',name:'Winston Churchill',desc:'British PM whose wartime resolve kept Britain in the fight. His refusal to negotiate with Hitler proved decisive.',quote:'"We shall fight on the beaches. We shall never surrender."'},
+  {id:'hitler',figure:'&#128226;',name:'Adolf Hitler',desc:'Nazi dictator whose expansionism and racial ideology caused tens of millions of deaths. Died April 30, 1945.',quote:'The product of a totalitarian system that stripped democracy of its safeguards.'},
+  {id:'rosie',figure:'&#128295;',name:'Rosie the Riveter',desc:'Symbol of 16 million women who entered wartime industry, transforming American production and challenging gender roles.',quote:'"We Can Do It" - and they did.'},
+  {id:'tuskegee',figure:'&#9992;',name:'Tuskegee Airmen',desc:'African American pilots who flew 15,000+ missions. Their record challenged segregation and paved the way for military desegregation in 1948.',quote:'Fighting fascism abroad while fighting discrimination at home.'},
+  {id:'truman',figure:'&#127760;',name:'Harry S. Truman',desc:'33rd President. Ordered the atomic bombings. Oversaw creation of the postwar international order. Desegregated the military in 1948.',quote:'"The buck stops here."'},
+];
+const SCENES={
+title_wwii:`<svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <defs><radialGradient id="wg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#c07818" stop-opacity="0.12"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+  <rect width="560" height="200" fill="#05060a"/><rect width="560" height="200" fill="url(#wg)"/>
+  <rect x="0" y="140" width="560" height="60" fill="#080608"/>
+  <rect x="0" y="138" width="560" height="4" fill="#1a1408"/>
+  <text x="280" y="115" font-family="Georgia,serif" font-size="10" fill="rgba(232,160,32,0.3)" text-anchor="middle" letter-spacing="4">1939 - ARSENAL OF DEMOCRACY - 1945</text>
+  <rect x="160" y="148" width="240" height="30" fill="#0d0c08" stroke="#1e1808" stroke-width="1"/>
+  <text x="280" y="160" font-family="Georgia,serif" font-size="7" fill="#8a7040" text-anchor="middle" letter-spacing="2">WORLD WAR II</text>
+  <text x="280" y="172" font-family="Georgia,serif" font-size="6" fill="#6a5020" text-anchor="middle">When is war justified?</text>
+</svg>`,
+
+europe_crisis:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <rect width="560" height="220" fill="#06050a"/>
+  <rect x="30" y="20" width="140" height="80" fill="#0a0608" stroke="#2a0808" stroke-width="1"/>
+  <text x="100" y="38" font-family="Georgia,serif" font-size="7" fill="#8a3020" text-anchor="middle">MARCH 1938</text>
+  <text x="100" y="52" font-family="Georgia,serif" font-size="8" fill="#c04030" text-anchor="middle">ANSCHLUSS</text>
+  <text x="100" y="66" font-family="Georgia,serif" font-size="6" fill="#8a3020" text-anchor="middle">Germany annexes Austria</text>
+  <text x="100" y="79" font-family="Georgia,serif" font-size="6" fill="#6a2010" text-anchor="middle">Europe looks away</text>
+  <rect x="195" y="20" width="170" height="80" fill="#0a0608" stroke="#2a0808" stroke-width="1"/>
+  <text x="280" y="38" font-family="Georgia,serif" font-size="7" fill="#8a3020" text-anchor="middle">SEPTEMBER 1938</text>
+  <text x="280" y="52" font-family="Georgia,serif" font-size="8" fill="#c04030" text-anchor="middle">MUNICH PACT</text>
+  <text x="280" y="66" font-family="Georgia,serif" font-size="6" fill="#8a3020" text-anchor="middle">Britain and France give Hitler</text>
+  <text x="280" y="79" font-family="Georgia,serif" font-size="6" fill="#6a2010" text-anchor="middle">the Sudetenland</text>
+  <rect x="390" y="20" width="140" height="80" fill="#0a0608" stroke="#2a0808" stroke-width="1"/>
+  <text x="460" y="38" font-family="Georgia,serif" font-size="7" fill="#8a3020" text-anchor="middle">SEPTEMBER 1939</text>
+  <text x="460" y="52" font-family="Georgia,serif" font-size="8" fill="#c04030" text-anchor="middle">POLAND INVADED</text>
+  <text x="460" y="66" font-family="Georgia,serif" font-size="6" fill="#8a3020" text-anchor="middle">Britain and France</text>
+  <text x="460" y="79" font-family="Georgia,serif" font-size="6" fill="#6a2010" text-anchor="middle">declare war</text>
+  <rect x="30" y="118" width="500" height="60" fill="#08060a" stroke="#2a1808" stroke-width="1"/>
+  <text x="280" y="137" font-family="Georgia,serif" font-size="8" fill="#a04030" text-anchor="middle" letter-spacing="1">THE COLLAPSE OF APPEASEMENT</text>
+  <text x="280" y="153" font-family="Georgia,serif" font-size="7" fill="#8a3020" text-anchor="middle">Every concession made Hitler stronger. Every delay made war more inevitable.</text>
+  <text x="280" y="168" font-family="Georgia,serif" font-size="7" fill="#6a2010" text-anchor="middle">By 1945, over 70 million people would be dead.</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#8a4030" text-anchor="middle" opacity="0.7">Europe - 1938-1939 - The road to world war</text>
+</svg>`,
+
+neutrality_debate:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <rect width="560" height="220" fill="#060810"/>
+  <rect x="40" y="15" width="220" height="100" fill="#06080c" stroke="#0a1020" stroke-width="1"/>
+  <text x="150" y="34" font-family="Georgia,serif" font-size="8" fill="#3a6aaa" text-anchor="middle">ISOLATIONIST AMERICA</text>
+  <text x="150" y="50" font-family="Georgia,serif" font-size="6" fill="#2a5a8a" text-anchor="middle">Neutrality Acts 1935-1937</text>
+  <text x="150" y="63" font-family="Georgia,serif" font-size="6" fill="#1a4a7a" text-anchor="middle">America First Committee</text>
+  <text x="150" y="76" font-family="Georgia,serif" font-size="6" fill="#1a3a6a" text-anchor="middle">Lindbergh opposes intervention</text>
+  <text x="150" y="89" font-family="Georgia,serif" font-size="6" fill="#1a3a6a" text-anchor="middle">90% of Americans want</text>
+  <text x="150" y="102" font-family="Georgia,serif" font-size="6" fill="#1a3a6a" text-anchor="middle">to stay out of war</text>
+  <rect x="300" y="15" width="220" height="100" fill="#0c0608" stroke="#201010" stroke-width="1"/>
+  <text x="410" y="34" font-family="Georgia,serif" font-size="8" fill="#aa6a3a" text-anchor="middle">INTERVENTIONIST PUSH</text>
+  <text x="410" y="50" font-family="Georgia,serif" font-size="6" fill="#8a5a2a" text-anchor="middle">Britain alone against Hitler</text>
+  <text x="410" y="63" font-family="Georgia,serif" font-size="6" fill="#7a4a1a" text-anchor="middle">FDR: Arsenal of Democracy</text>
+  <text x="410" y="76" font-family="Georgia,serif" font-size="6" fill="#6a3a0a" text-anchor="middle">Cash and Carry 1939</text>
+  <text x="410" y="89" font-family="Georgia,serif" font-size="6" fill="#5a2a00" text-anchor="middle">Lend-Lease March 1941</text>
+  <text x="410" y="102" font-family="Georgia,serif" font-size="6" fill="#5a2a00" text-anchor="middle">Destroyers for Bases deal</text>
+  <rect x="30" y="130" width="500" height="62" fill="#080608" stroke="#201808" stroke-width="1"/>
+  <text x="280" y="150" font-family="Georgia,serif" font-size="8" fill="#c07818" text-anchor="middle">DECEMBER 7, 1941</text>
+  <text x="280" y="166" font-family="Georgia,serif" font-size="8" fill="#a06010" text-anchor="middle">"A date which will live in infamy" - FDR</text>
+  <text x="280" y="181" font-family="Georgia,serif" font-size="7" fill="#806000" text-anchor="middle">Pearl Harbor ends the debate. The U.S. enters the war.</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#8a6820" text-anchor="middle" opacity="0.8">Washington D.C. - 1939-1941</text>
+</svg>`,
+
+home_front:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <rect width="560" height="220" fill="#06080a"/>
+  <rect x="20" y="60" width="160" height="110" fill="#0a0808" stroke="#2e2010" stroke-width="1"/>
+  <rect x="30" y="70" width="60" height="40" fill="#0d0c08"/>
+  <rect x="100" y="70" width="60" height="40" fill="#0d0c08"/>
+  <rect x="30" y="120" width="130" height="40" fill="#0d0c08"/>
+  <ellipse cx="65" cy="130" rx="7" ry="8" fill="#c49a6c"/><rect x="58" y="138" width="14" height="14" fill="#1a2a6b"/>
+  <ellipse cx="90" cy="128" rx="7" ry="8" fill="#8B5E3C"/><rect x="83" y="136" width="14" height="14" fill="#2a1a0a"/>
+  <ellipse cx="115" cy="130" rx="7" ry="8" fill="#c49a6c"/><rect x="108" y="138" width="14" height="14" fill="#1a2a6b"/>
+  <text x="100" y="175" font-family="sans-serif" font-size="5.5" fill="#a07820" text-anchor="middle">FACTORY PRODUCTION LINE</text>
+  <rect x="200" y="30" width="150" height="160" fill="#08080a" stroke="#1e1808" stroke-width="1"/>
+  <rect x="215" y="40" width="120" height="55" fill="#0a0a0d"/>
+  <text x="275" y="58" font-family="sans-serif" font-size="7" fill="#c07818" text-anchor="middle">WAR BONDS</text>
+  <text x="275" y="72" font-family="sans-serif" font-size="6" fill="#9a6010" text-anchor="middle">Buy your share</text>
+  <text x="275" y="85" font-family="sans-serif" font-size="5" fill="#7a4a00" text-anchor="middle">of America's future</text>
+  <rect x="215" y="105" width="120" height="32" fill="#0a0a08"/>
+  <text x="275" y="118" font-family="sans-serif" font-size="6" fill="#c07818" text-anchor="middle">RATIONING STAMPS</text>
+  <text x="275" y="130" font-family="sans-serif" font-size="5.5" fill="#8a6010" text-anchor="middle">Sugar - Gas - Meat - Shoes</text>
+  <rect x="215" y="147" width="120" height="35" fill="#080a08"/>
+  <text x="275" y="161" font-family="sans-serif" font-size="6" fill="#3a8a3a" text-anchor="middle">WAR PRODUCTION BOARD</text>
+  <text x="275" y="174" font-family="sans-serif" font-size="5" fill="#2a6a2a" text-anchor="middle">Cars become tanks</text>
+  <rect x="370" y="35" width="165" height="150" fill="#080608" stroke="#1e0808" stroke-width="1"/>
+  <text x="452" y="55" font-family="sans-serif" font-size="7" fill="#8a3020" text-anchor="middle">INTERNMENT</text>
+  <text x="452" y="70" font-family="sans-serif" font-size="6" fill="#6a2010" text-anchor="middle">Executive Order 9066</text>
+  <text x="452" y="84" font-family="sans-serif" font-size="6" fill="#5a1808" text-anchor="middle">120,000 Japanese Americans</text>
+  <text x="452" y="97" font-family="sans-serif" font-size="6" fill="#4a1008" text-anchor="middle">removed from their homes</text>
+  <rect x="380" y="108" width="145" height="60" fill="#0a0606" stroke="#2a1008" stroke-width="0.5"/>
+  <ellipse cx="400" cy="125" rx="7" ry="8" fill="#8B5E3C"/><rect x="393" y="133" width="14" height="12" fill="#1a1a3a"/>
+  <ellipse cx="425" cy="122" rx="7" ry="8" fill="#c49a6c"/><rect x="418" y="130" width="14" height="12" fill="#1a1a3a"/>
+  <ellipse cx="450" cy="125" rx="7" ry="8" fill="#a07040"/><rect x="443" y="133" width="14" height="12" fill="#1a1a2a"/>
+  <text x="452" y="185" font-family="sans-serif" font-size="5.5" fill="#8a3020" text-anchor="middle">Most were U.S. citizens</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#8a7040" text-anchor="middle" opacity="0.8">American Home Front - 1942-1945</text>
+</svg>`,
+
+pacific_europe:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <rect width="560" height="220" fill="#050608"/>
+  <rect x="20" y="15" width="240" height="115" fill="#060810" stroke="#0a1428" stroke-width="1"/>
+  <text x="140" y="33" font-family="Georgia,serif" font-size="8" fill="#2a5aaa" text-anchor="middle">EUROPE FIRST</text>
+  <text x="140" y="48" font-family="Georgia,serif" font-size="6" fill="#1a4a8a" text-anchor="middle">Germany: primary threat</text>
+  <text x="140" y="61" font-family="Georgia,serif" font-size="6" fill="#1a3a7a" text-anchor="middle">North Africa - Operation Torch</text>
+  <text x="140" y="74" font-family="Georgia,serif" font-size="6" fill="#1a3a7a" text-anchor="middle">Sicily and Italy 1943</text>
+  <text x="140" y="87" font-family="Georgia,serif" font-size="6" fill="#1a3a7a" text-anchor="middle">D-Day Normandy June 6 1944</text>
+  <text x="140" y="100" font-family="Georgia,serif" font-size="6" fill="#1a3a7a" text-anchor="middle">Battle of the Bulge Dec 1944</text>
+  <text x="140" y="113" font-family="Georgia,serif" font-size="6" fill="#1a3a7a" text-anchor="middle">Berlin falls May 1945</text>
+  <rect x="300" y="15" width="240" height="115" fill="#060a08" stroke="#0a2010" stroke-width="1"/>
+  <text x="420" y="33" font-family="Georgia,serif" font-size="8" fill="#3a8a3a" text-anchor="middle">PACIFIC THEATER</text>
+  <text x="420" y="48" font-family="Georgia,serif" font-size="6" fill="#2a6a2a" text-anchor="middle">Pearl Harbor Dec 7 1941</text>
+  <text x="420" y="61" font-family="Georgia,serif" font-size="6" fill="#2a6a2a" text-anchor="middle">Coral Sea and Midway 1942</text>
+  <text x="420" y="74" font-family="Georgia,serif" font-size="6" fill="#2a6a2a" text-anchor="middle">Island-hopping strategy</text>
+  <text x="420" y="87" font-family="Georgia,serif" font-size="6" fill="#2a6a2a" text-anchor="middle">Guadalcanal - Iwo Jima</text>
+  <text x="420" y="100" font-family="Georgia,serif" font-size="6" fill="#2a6a2a" text-anchor="middle">Okinawa - 100,000 casualties</text>
+  <text x="420" y="113" font-family="Georgia,serif" font-size="6" fill="#2a6a2a" text-anchor="middle">Atomic bomb Aug 1945</text>
+  <rect x="20" y="145" width="520" height="52" fill="#08060a" stroke="#1e1208" stroke-width="1"/>
+  <text x="280" y="163" font-family="Georgia,serif" font-size="8" fill="#c07818" text-anchor="middle">THE ALLIED STRATEGY: DEFEAT GERMANY FIRST</text>
+  <text x="280" y="179" font-family="Georgia,serif" font-size="7" fill="#a06010" text-anchor="middle">Then turn the full weight of American power on Japan</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#8a7040" text-anchor="middle" opacity="0.7">Allied Command - 1942-1945 - The two-front war</text>
+</svg>`,
+
+dday:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <rect width="560" height="220" fill="#050608"/>
+  <rect x="0" y="130" width="560" height="90" fill="#06080c"/>
+  <rect x="20" y="145" width="100" height="45" fill="#0a1018" stroke="#0e1828" stroke-width="1" rx="3"/>
+  <rect x="140" y="140" width="120" height="50" fill="#0a1018" stroke="#0e1828" stroke-width="1" rx="2"/>
+  <rect x="280" y="148" width="80" height="42" fill="#0a1018" stroke="#0e1828" stroke-width="1" rx="2"/>
+  <rect x="380" y="142" width="140" height="48" fill="#0a1018" stroke="#0e1828" stroke-width="1" rx="3"/>
+  <ellipse cx="70" cy="142" rx="7" ry="8" fill="#b09060"/><rect x="63" y="150" width="14" height="14" fill="#3a4a20"/>
+  <ellipse cx="90" cy="145" rx="7" ry="8" fill="#c49a6c"/><rect x="83" y="153" width="14" height="14" fill="#3a4a20"/>
+  <ellipse cx="190" cy="138" rx="7" ry="8" fill="#8B5E3C"/><rect x="183" y="146" width="14" height="14" fill="#3a4a20"/>
+  <ellipse cx="210" cy="141" rx="7" ry="8" fill="#c49a6c"/><rect x="203" y="149" width="14" height="14" fill="#3a4a20"/>
+  <ellipse cx="310" cy="144" rx="7" ry="8" fill="#b09060"/><rect x="303" y="152" width="14" height="14" fill="#3a4a20"/>
+  <ellipse cx="430" cy="138" rx="7" ry="8" fill="#c49a6c"/><rect x="423" y="146" width="14" height="14" fill="#3a4a20"/>
+  <ellipse cx="450" cy="141" rx="7" ry="8" fill="#8B5E3C"/><rect x="443" y="149" width="14" height="14" fill="#3a4a20"/>
+  <rect x="0" y="98" width="560" height="36" fill="#06060a" opacity="0.9"/>
+  <text x="280" y="114" font-family="Georgia,serif" font-size="9" fill="#2a5aaa" text-anchor="middle" letter-spacing="3">OPERATION OVERLORD</text>
+  <text x="280" y="128" font-family="Georgia,serif" font-size="7" fill="#1a4a8a" text-anchor="middle">June 6, 1944 - Normandy, France - 156,000 Allied troops in one day</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#3a5a8a" text-anchor="middle" opacity="0.8">Normandy Beach - June 6, 1944 - The longest day</text>
+</svg>`,
+
+holocaust:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <rect width="560" height="220" fill="#030305"/>
+  <rect x="20" y="15" width="520" height="88" fill="#060406" stroke="#180818" stroke-width="1"/>
+  <text x="280" y="34" font-family="Georgia,serif" font-size="9" fill="#6a2060" text-anchor="middle" letter-spacing="2">THE HOLOCAUST - 1941-1945</text>
+  <text x="280" y="50" font-family="Georgia,serif" font-size="7" fill="#5a1a50" text-anchor="middle">6 million Jews murdered by Nazi Germany</text>
+  <text x="280" y="64" font-family="Georgia,serif" font-size="7" fill="#4a1040" text-anchor="middle">11 million total victims: Roma, disabled, Soviet POWs, political opponents</text>
+  <text x="280" y="78" font-family="Georgia,serif" font-size="7" fill="#3a0a30" text-anchor="middle">Wannsee Conference 1942 - Final Solution systematized</text>
+  <text x="280" y="92" font-family="Georgia,serif" font-size="7" fill="#2a0820" text-anchor="middle">Auschwitz - Treblinka - Sobibor - Dachau - Bergen-Belsen</text>
+  <rect x="20" y="118" width="520" height="72" fill="#040304" stroke="#180818" stroke-width="1"/>
+  <text x="280" y="138" font-family="Georgia,serif" font-size="8" fill="#8a7040" text-anchor="middle">LIBERATION AND RECKONING</text>
+  <text x="280" y="154" font-family="Georgia,serif" font-size="7" fill="#6a5030" text-anchor="middle">Allied armies liberate camps in spring 1945</text>
+  <text x="280" y="168" font-family="Georgia,serif" font-size="7" fill="#5a4020" text-anchor="middle">Nuremberg Trials 1945-1946 - Crimes against humanity defined</text>
+  <text x="280" y="182" font-family="Georgia,serif" font-size="7" fill="#4a3010" text-anchor="middle">United Nations - Universal Declaration of Human Rights 1948</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#6a5030" text-anchor="middle" opacity="0.7">Never forget. Never again.</text>
+</svg>`,
+
+atomic_bomb:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <defs><radialGradient id="abG" cx="50%" cy="65%" r="40%"><stop offset="0%" stop-color="#c07818" stop-opacity="0.25"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+  <rect width="560" height="220" fill="#050405"/><rect width="560" height="220" fill="url(#abG)"/>
+  <ellipse cx="280" cy="58" rx="58" ry="34" fill="#2a1808" opacity="0.6"/>
+  <ellipse cx="280" cy="53" rx="44" ry="27" fill="#3a2010" opacity="0.7"/>
+  <rect x="268" y="58" width="24" height="78" fill="#1a1008" opacity="0.6"/>
+  <ellipse cx="280" cy="142" rx="28" ry="9" fill="#2a1808" opacity="0.5"/>
+  <rect x="20" y="15" width="200" height="82" fill="#060408" stroke="#180810" stroke-width="1"/>
+  <text x="120" y="33" font-family="Georgia,serif" font-size="7.5" fill="#6a2050" text-anchor="middle">HIROSHIMA</text>
+  <text x="120" y="48" font-family="Georgia,serif" font-size="6" fill="#5a1840" text-anchor="middle">August 6, 1945</text>
+  <text x="120" y="61" font-family="Georgia,serif" font-size="6" fill="#4a1030" text-anchor="middle">Little Boy detonates</text>
+  <text x="120" y="74" font-family="Georgia,serif" font-size="6" fill="#3a0820" text-anchor="middle">70,000-80,000 dead instantly</text>
+  <text x="120" y="87" font-family="Georgia,serif" font-size="6" fill="#2a0810" text-anchor="middle">Tens of thousands more after</text>
+  <rect x="340" y="15" width="200" height="82" fill="#060408" stroke="#180810" stroke-width="1"/>
+  <text x="440" y="33" font-family="Georgia,serif" font-size="7.5" fill="#6a2050" text-anchor="middle">NAGASAKI</text>
+  <text x="440" y="48" font-family="Georgia,serif" font-size="6" fill="#5a1840" text-anchor="middle">August 9, 1945</text>
+  <text x="440" y="61" font-family="Georgia,serif" font-size="6" fill="#4a1030" text-anchor="middle">Fat Man detonates</text>
+  <text x="440" y="74" font-family="Georgia,serif" font-size="6" fill="#3a0820" text-anchor="middle">40,000 dead immediately</text>
+  <text x="440" y="87" font-family="Georgia,serif" font-size="6" fill="#2a0810" text-anchor="middle">Japan surrenders Aug 15</text>
+  <rect x="20" y="112" width="520" height="68" fill="#060406" stroke="#1e1208" stroke-width="1"/>
+  <text x="280" y="130" font-family="Georgia,serif" font-size="8" fill="#c07818" text-anchor="middle">THE MANHATTAN PROJECT</text>
+  <text x="280" y="146" font-family="Georgia,serif" font-size="7" fill="#a06010" text-anchor="middle">$2 billion. 130,000 workers. Three years. The most destructive weapon in history.</text>
+  <text x="280" y="161" font-family="Georgia,serif" font-size="7" fill="#806000" text-anchor="middle">"Now I am become Death, destroyer of worlds." - Oppenheimer, 1945</text>
+  <text x="280" y="175" font-family="Georgia,serif" font-size="7" fill="#604800" text-anchor="middle">The nuclear age begins. The moral debate has never ended.</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#8a6020" text-anchor="middle" opacity="0.7">Hiroshima and Nagasaki - August 1945</text>
+</svg>`,
+
+postwar:`<svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+  <rect width="560" height="220" fill="#060810"/>
+  <rect x="20" y="15" width="240" height="92" fill="#06080c" stroke="#0a1020" stroke-width="1"/>
+  <text x="140" y="33" font-family="Georgia,serif" font-size="8" fill="#3a6aaa" text-anchor="middle">NEW INSTITUTIONS</text>
+  <text x="140" y="48" font-family="Georgia,serif" font-size="6" fill="#2a5a8a" text-anchor="middle">United Nations 1945</text>
+  <text x="140" y="61" font-family="Georgia,serif" font-size="6" fill="#1a4a7a" text-anchor="middle">World Bank - IMF</text>
+  <text x="140" y="74" font-family="Georgia,serif" font-size="6" fill="#1a3a6a" text-anchor="middle">Nuremberg Trials - accountability</text>
+  <text x="140" y="87" font-family="Georgia,serif" font-size="6" fill="#1a3a6a" text-anchor="middle">Marshall Plan rebuilds Europe</text>
+  <text x="140" y="100" font-family="Georgia,serif" font-size="6" fill="#1a3a6a" text-anchor="middle">NATO - collective defense</text>
+  <rect x="300" y="15" width="240" height="92" fill="#0a0808" stroke="#201010" stroke-width="1"/>
+  <text x="420" y="33" font-family="Georgia,serif" font-size="8" fill="#aa6a3a" text-anchor="middle">HOME FRONT CHANGES</text>
+  <text x="420" y="48" font-family="Georgia,serif" font-size="6" fill="#8a5a2a" text-anchor="middle">GI Bill - education and housing</text>
+  <text x="420" y="61" font-family="Georgia,serif" font-size="6" fill="#7a4a1a" text-anchor="middle">Suburban boom begins</text>
+  <text x="420" y="74" font-family="Georgia,serif" font-size="6" fill="#6a3a0a" text-anchor="middle">Veterans reshape America</text>
+  <text x="420" y="87" font-family="Georgia,serif" font-size="6" fill="#6a3a0a" text-anchor="middle">Cold War replaces WWII threat</text>
+  <text x="420" y="100" font-family="Georgia,serif" font-size="6" fill="#5a2a00" text-anchor="middle">Civil rights pressure mounts</text>
+  <rect x="20" y="122" width="520" height="68" fill="#07060a" stroke="#1e1808" stroke-width="1"/>
+  <text x="280" y="141" font-family="Georgia,serif" font-size="8" fill="#c07818" text-anchor="middle">THE WORLD AFTER 1945</text>
+  <text x="280" y="157" font-family="Georgia,serif" font-size="7" fill="#a06010" text-anchor="middle">The U.S. rejected isolationism and accepted permanent global leadership.</text>
+  <text x="280" y="172" font-family="Georgia,serif" font-size="7" fill="#806000" text-anchor="middle">Europe lay in ruins. Soviet power was rising. A new conflict was beginning.</text>
+  <text x="280" y="187" font-family="Georgia,serif" font-size="7" fill="#604800" text-anchor="middle">America would never be a bystander again.</text>
+  <text x="280" y="212" font-family="Georgia,serif" font-size="8" fill="#8a6820" text-anchor="middle" opacity="0.8">San Francisco 1945 - Building the postwar world</text>
+</svg>`,
+};
+const CHAPTERS=[
+{
+  id:'storm_europe',num:1,title:'Storm Over Europe',icon:'&#9889;',
+  period:'Europe and Washington D.C. - 1933-1939',
+  context:'Adolf Hitler came to power in Germany in 1933 and began systematically dismantling the Versailles settlement. Fascism spread to Italy under Mussolini and Spain under Franco. European democracies, haunted by WWI casualties, tried to contain German aggression through negotiation rather than force. The strategy, known as appeasement, gave Hitler Austria, then the Sudetenland, then Czechoslovakia. Each concession made the next demand larger. By September 1939, Germany invaded Poland and the world was at war. In Washington, FDR watched with alarm but faced a powerful isolationist movement backed by law: the Neutrality Acts prohibited arms sales to belligerents.',
+  standards:['SS.912.A.6.1','SS.912.A.6.2'],
+  eocFocus:'Rise of totalitarianism; causes of WWII; appeasement; Neutrality Acts',
+  keyVocab:[
+    {term:'Totalitarianism',def:'A system of government demanding total submission to the state, eliminating political opposition and controlling all aspects of life. Nazi Germany is the defining example.'},
+    {term:'Appeasement',def:'The policy of making concessions to an aggressive power to avoid war - associated with Britain and France giving Hitler territorial demands in the 1930s.'},
+    {term:'Munich Pact (1938)',def:'Agreement in which Britain and France gave Germany the Sudetenland in exchange for Hitler\'s promise of no further expansion - a promise he broke within months.'},
+    {term:'Neutrality Acts (1935-1937)',def:'U.S. laws prohibiting arms sales and loans to nations at war, intended to keep America out of European conflicts.'},
+  ],
+  cardEarned:'fdr',badge:'neutrality_broken',
+  timelineEntry:{figure:'munich',year:'1938',sprite:'&#9889;',title:'Munich and Appeasement',desc:'Britain and France surrendered the Sudetenland to Hitler at Munich. Within six months Germany occupied all of Czechoslovakia. The lesson: dictators interpret compromise as weakness.'},
+  beats:[
+    {
+      scene:'europe_crisis',location:'London, England',date:'September 30, 1938 - The Munich Agreement',
+      narrative:'You are a senior British diplomat in 1938. Prime Minister Neville Chamberlain has just returned from Munich, where he, French Premier Daladier, Mussolini, and Hitler reached an agreement giving Germany the Sudetenland, the German-speaking western region of Czechoslovakia. Czechoslovakia was not invited to negotiate the terms of its own dismemberment.\n\nChamberlain stepped off the plane waving a piece of paper signed by Hitler, declaring "peace in our time." The crowds cheered. In the House of Commons, Winston Churchill rose and called the agreement "a total and unmitigated defeat."\n\nYou have studied Hitler\'s pattern: the Rhineland in 1936, Austria in 1938, now the Sudetenland. Czech military fortifications along the Sudeten border were among the strongest in Europe. You have just helped give them away.\n\nChamberlain argues that satisfying Germany\'s legitimate ethnic grievances will bring stability. Churchill argues that appeasement only encourages further demands. The debate is not merely academic - it is about whether war can still be prevented, and at what price.',
+      decision:'Which assessment of the Munich Agreement best reflects what actually happened afterward?',
+      choices:[
+        {text:'Chamberlain bought time for Britain to rearm, and the agreement was strategically wise despite its moral costs',correct:false,feedback:'This argument was made at the time - and Britain did accelerate aircraft production. But the Czechs lost their frontier fortifications and their army, resources that would have aided the Allied cause. More critically, Hitler occupied all of Czechoslovakia within six months, proving the agreement worthless. The strategic value of time did not offset the military and moral costs of surrendering a democratic ally.',std:'SS.912.A.6.1'},
+        {text:'Appeasement signaled weakness to Hitler, accelerated his aggression, and made war more likely rather than less',correct:true,feedback:'Churchill was right. Hitler\'s private reaction to Munich was fury - he had wanted a war, not a diplomatic settlement. He interpreted Chamberlain\'s willingness to concede as proof that Britain lacked the will to fight. Six months later he violated the agreement entirely, occupying Prague. The pattern of appeasement taught Hitler that democracies would repeatedly back down - which made his demands larger, not smaller, and made the eventual war far more costly.',std:'SS.912.A.6.1'},
+        {text:'The agreement was morally unacceptable but had no real effect on Hitler\'s military calculations or timeline',correct:false,feedback:'The agreement had significant military consequences. Czechoslovakia\'s Skoda arms works, its trained army, and its defensive fortifications fell to Germany - resources that strengthened Hitler for the wars that followed. Every country, resource, and position surrendered between 1938 and 1940 made the war harder to win.',std:'SS.912.A.6.1'},
+        {text:'Chamberlain correctly judged that Britain could not win a war against Germany in 1938, making the agreement the only realistic option',correct:false,feedback:'British military planners were divided on this. France and Britain together, supported by Czechoslovakia\'s formidable army and fortifications, were not obviously inferior to Germany in 1938. The critical question is not whether war in 1938 would have been won or lost, but whether appeasement prevented war at all. It did not - it only postponed it at a higher cost.',std:'SS.912.A.6.1'},
+      ]
+    },
+    {
+      scene:'europe_crisis',location:'Washington D.C.',date:'Fall 1939 - America Watches Europe',
+      narrative:'It is September 1939. Germany has invaded Poland from the west. Soviet forces invaded from the east under the secret Molotov-Ribbentrop Pact. Within weeks, Poland ceases to exist.\n\nBritain and France honor their treaty commitments and declare war on Germany. But they cannot reach Poland in time.\n\nIn Washington, FDR listens to radio reports of the German advance. He privately believes Germany must be stopped but faces the 1937 Neutrality Act, which prohibits selling arms to belligerents. Public opinion polls show roughly 90 percent of Americans want to stay out of the war.\n\nFDR\'s dilemma is genuine and difficult: he believes the fall of Britain and France would be catastrophic for the United States, but he cannot lead a democracy into a war its citizens oppose. He must find a way to help the Allies without openly going to war - and do so while facing an election in 1940.',
+      decision:'Which argument most convincingly explains why Germany\'s conquest of Europe would threaten American security - even from across the Atlantic?',
+      choices:[
+        {text:'A Germany controlling Europe would dominate Atlantic trade routes, cutting off American commerce and threatening economic survival',correct:false,feedback:'Economic disruption was a real concern but was secondary to strategic ones. The more urgent argument was that a Germany controlling European industrial capacity, naval bases, and resources would become powerful enough to project force across the Atlantic - directly threatening American security. FDR framed it in terms of hemispheric defense, not primarily economic protection.',std:'SS.912.A.6.2'},
+        {text:'A Germany controlling European industrial power and Atlantic coastlines would be capable of projecting force into the Western Hemisphere, directly threatening U.S. security',correct:true,feedback:'This was FDR\'s core strategic argument, made most explicitly in his "Arsenal of Democracy" speech of December 1940. If Britain fell, Germany would control the Atlantic coast from Norway to France, possess the Royal Navy or destroy it, and command the industrial resources of the entire European continent. That combination of power would eventually threaten the Americas directly. FDR argued that helping Britain was therefore not charity - it was self-defense.',std:'SS.912.A.6.2'},
+        {text:'Germany\'s racial ideology posed a moral threat to American democratic values that justified military intervention regardless of strategic considerations',correct:false,feedback:'FDR consistently framed intervention in strategic rather than moral terms when speaking publicly, because he knew Americans would not support intervention on moral grounds alone. The isolationists were not immoral - they argued America had no obligation to fight every foreign war. FDR\'s winning argument was strategic: German dominance of Europe threatened American security, not just American values.',std:'SS.912.A.6.2'},
+        {text:'Germany\'s alliance with Japan created a two-ocean threat that American naval power could not address without Allied partners in Europe',correct:false,feedback:'The Tripartite Pact linking Germany, Italy, and Japan came in September 1940, and the two-ocean threat was a genuine concern. But this was secondary to the core hemispheric security argument. FDR\'s 1939-1940 case for aiding Britain predated the formal Axis alliance.',std:'SS.912.A.6.2'},
+      ]
+    },
+    {
+      scene:'neutrality_debate',location:'Washington D.C.',date:'1939-1941 - The Neutrality Debate',
+      narrative:'Between 1939 and December 1941, FDR walked a careful line. Step by step, he moved the United States from strict neutrality toward what amounted to undeclared war on the side of the Allies.\n\n1939: FDR persuades Congress to allow "Cash and Carry" - nations could buy American arms if they paid cash and shipped them on their own vessels. Since Britain controlled the Atlantic, this effectively meant arming Britain.\n\n1940: After France fell and Britain stood alone, FDR traded 50 old destroyers to Britain in exchange for naval base rights - bypassing Congress entirely.\n\n1941: The Lend-Lease Act passed in March, allowing FDR to lend or lease war materials to any nation whose defense he deemed vital to American security. U.S. naval vessels began escorting British convoys. German submarines attacked American destroyers. By October 1941, U.S. and German forces were in an undeclared war in the Atlantic.\n\nIsolationists accused FDR of lying to the public. Interventionists argued America had no choice. The question was not whether America would enter - it was when.',
+      decision:'Which policy change best represents the moment the United States effectively abandoned neutrality and became a committed ally of Britain?',
+      choices:[
+        {text:'The Cash and Carry policy of 1939, which allowed arms sales to nations that could pay and ship them immediately',correct:false,feedback:'Cash and Carry was a step away from strict neutrality but preserved the legal fiction of equal access. In practice it favored Britain since Britain controlled the Atlantic, but it did not commit American naval forces or create a formal alliance.',std:'SS.912.A.6.2'},
+        {text:'The Lend-Lease Act of 1941, which committed the United States to supplying Britain and other Allies with unlimited war materials and tied American security directly to Allied victory',correct:true,feedback:'Lend-Lease was the decisive break. Churchill called it "the most unsordid act in the history of any nation." It committed American industrial output to the Allied cause, declared that Allied victory was essential to American security, and created a relationship of material dependence that made American entry almost inevitable. Isolationists understood exactly what it meant - Senator Wheeler called it "the New Deal\'s triple-A foreign policy - plow under every fourth American boy."',std:'SS.912.A.6.2'},
+        {text:'The Destroyers for Bases deal of 1940, which transferred naval vessels to Britain in exchange for base rights',correct:false,feedback:'The Destroyers for Bases deal was significant and FDR bypassed Congress to execute it - but it was a one-time transaction, not an open-ended commitment. Lend-Lease was transformative because it created an ongoing, unlimited supply relationship that committed American production to Allied victory.',std:'SS.912.A.6.2'},
+        {text:'The revision of the Neutrality Act in 1939, which allowed American merchant ships to arm themselves for Atlantic transit',correct:false,feedback:'Arming merchant ships was a late 1941 development, after Lend-Lease had already been enacted. The earlier Neutrality Act revisions were steps, but the fundamental transformation came with Lend-Lease in March 1941.',std:'SS.912.A.6.2'},
+      ]
+    },
+  ]
+},
+{
+  id:'arsenal_democracy',num:2,title:'Arsenal of Democracy',icon:'&#9881;',
+  period:'American Home Front - 1941-1945',
+  context:'Pearl Harbor ended the debate about American involvement on December 7, 1941. What followed was one of the most extraordinary economic mobilizations in history. The War Production Board converted civilian industry to military production: auto plants made tanks, appliance factories made weapons, and women entered the industrial workforce in numbers never seen before. The war economy ended the Depression and employed millions. But mobilization also revealed and deepened American contradictions. African Americans fought under the Double V campaign - victory over fascism abroad, victory over discrimination at home. Japanese Americans were forcibly removed from the West Coast under Executive Order 9066. The gap between American ideals and American practice had never been more visible.',
+  standards:['SS.912.A.6.3','SS.912.A.6.4'],
+  eocFocus:'Home front mobilization; women in industry; Japanese American internment; Double V campaign',
+  keyVocab:[
+    {term:'War Production Board',def:'Federal agency created in 1942 to oversee the conversion of American industry to war production - coordinating the manufacture of tanks, ships, aircraft, and weapons.'},
+    {term:'Executive Order 9066',def:'FDR\'s 1942 order authorizing removal of Japanese Americans from the West Coast, leading to the internment of 120,000 people, most of whom were U.S. citizens.'},
+    {term:'Double V Campaign',def:'African American push during WWII for "Double Victory" - victory over fascism abroad and victory over racism and discrimination at home.'},
+    {term:'Korematsu v. United States',def:'1944 Supreme Court case upholding the constitutionality of Japanese American internment - later broadly condemned and formally repudiated in 2018.'},
+  ],
+  cardEarned:'rosie',badge:'arsenal',
+  timelineEntry:{figure:'home_front_42',year:'1942',sprite:'&#9881;',title:'The Arsenal Awakes',desc:'American industrial production shifted to war. Women entered the workforce in unprecedented numbers. But Japanese American internment showed the gap between democratic ideals and wartime fear.'},
+  beats:[
+    {
+      scene:'home_front',location:'Detroit, Michigan',date:'Early 1942 - Industrial Conversion',
+      narrative:'You are a factory manager at a Michigan automobile plant in February 1942. Last month your plant built its last civilian car. Beginning this month, under War Production Board directive, your facility converts entirely to tank production.\n\nThe transformation is extraordinary. Your engineering team is redesigning assembly lines. Workers who spent years mastering one set of tasks are being retrained. You need thousands of additional workers to meet government production quotas. You cannot meet those quotas with your existing male workforce alone.\n\nYour labor recruiter tells you that large numbers of women are applying for factory positions - positions that were all-male before the war. Many have never worked in heavy industry. Some foremen are resistant, arguing women are not suited to the physical demands.\n\nYou look at your production quota. You look at enlistment numbers. You do the math.',
+      decision:'Which statement most accurately describes what the wartime entry of women into industrial employment meant for American society?',
+      choices:[
+        {text:'It permanently established gender equality in the American workplace, eliminating barriers women had faced in industrial and professional employment',correct:false,feedback:'The wartime gains were real but not immediately permanent. When veterans returned, women were pressured to leave factory jobs and return to domestic roles. The ideology of the male breadwinner reasserted itself strongly. The wartime experience planted seeds of change and demonstrated women\'s industrial capacity beyond doubt, but the immediate postwar period reversed many gains. The feminist movement of the 1960s would build directly on the WWII experience.',std:'SS.912.A.6.3'},
+        {text:'It demonstrated women\'s industrial capabilities while revealing the limits of wartime progress, as most gains were reversed by postwar pressure to return to domestic roles',correct:true,feedback:'Sixteen million women entered the paid workforce during the war. They welded, riveted, and ran industrial equipment as well as the men who had done those jobs before. The wartime experience was transformative personally and culturally. But when veterans returned, economic and social pressure pushed most women back out of industrial jobs. The postwar ideology celebrated domesticity and motherhood. The contradictions of wartime progress and postwar retrenchment became a central argument for the women\'s movement twenty years later.',std:'SS.912.A.6.3'},
+        {text:'It had no lasting effect on gender roles because women always worked in large numbers in American industry before the war',correct:false,feedback:'Women had worked in industry before WWII - particularly in textiles and food processing - but they had been largely excluded from heavy industry and high-wage manufacturing. The wartime entry into those sectors was genuinely new. "Rosie the Riveter" became a cultural icon precisely because what she was doing was unprecedented.',std:'SS.912.A.6.3'},
+        {text:'It created immediate and lasting legal equality for women in all employment fields, supported by legislation passed during the war',correct:false,feedback:'No major federal legislation established legal employment equality for women during World War II. The legal framework for workplace gender equality came much later: the Equal Pay Act of 1963 and Title VII of the Civil Rights Act of 1964. The wartime experience demonstrated capacity but did not produce legal protections.',std:'SS.912.A.6.3'},
+      ]
+    },
+    {
+      scene:'home_front',location:'West Coast, United States',date:'February 1942 - Executive Order 9066',
+      narrative:'You are a civil liberties attorney in California, February 1942. Two months after Pearl Harbor, fear and suspicion of the Japanese American community have been building. Military leaders, politicians, and newspapers are calling for the removal of all people of Japanese ancestry from the West Coast, citing potential sabotage.\n\nPresident Roosevelt has just signed Executive Order 9066, authorizing the military to remove anyone from designated exclusion zones. In practice, approximately 120,000 Japanese Americans - two thirds of them American citizens by birth - will be forcibly relocated to internment camps in remote areas. They must sell their homes, businesses, and possessions in days. They have committed no crime. The FBI has found no evidence of organized sabotage or espionage in the Japanese American community.\n\nFBI Director J. Edgar Hoover told the Justice Department that mass removal was unnecessary for security purposes. The Army disagrees. FDR signs.\n\nYour client, Fred Korematsu, has refused to comply with the removal order. He wants to challenge it in court. You are preparing your arguments.',
+      decision:'Which argument best captures the constitutional problem with Executive Order 9066 and the Supreme Court\'s 1944 Korematsu decision upholding it?',
+      choices:[
+        {text:'The order was legal because wartime national security emergencies allow the government to suspend constitutional rights when military necessity justifies it',correct:false,feedback:'This was the argument the Supreme Court accepted in Korematsu (1944), with a 6-3 majority. But the majority\'s own standard - that racial classifications require "the most rigid scrutiny" - should have led to the opposite conclusion. The FBI had found no evidence of Japanese American disloyalty. No German Americans or Italian Americans were subjected to mass removal despite the U.S. also being at war with their ancestral countries. The decision is now widely considered one of the Supreme Court\'s most serious constitutional failures. In 2018, the Court formally repudiated the Korematsu precedent.',std:'SS.912.A.6.4'},
+        {text:'The order violated the Constitution because it imposed punishment on an entire racial group without individual evidence of disloyalty, using race as a proxy for guilt',correct:true,feedback:'This was the argument in Justice Robert Jackson\'s dissent. The government presented no evidence that any individual removed posed a security threat. Race was used as a substitute for evidence - and that is precisely what equal protection principles prohibit. Congress formally acknowledged this injustice in the Civil Liberties Act of 1988, providing a formal apology and $20,000 in reparations to each surviving internee. The Korematsu case remains a warning about how wartime fear can override constitutional protections.',std:'SS.912.A.6.4'},
+        {text:'The order was unconstitutional because Congress had not explicitly authorized it, making it a presidential overreach',correct:false,feedback:'The separation of powers concern was real but was not the primary constitutional objection raised by Korematsu\'s lawyers. Congress subsequently ratified the order, and courts generally defer to the executive on military matters during wartime. The stronger constitutional objection was equal protection: government cannot classify citizens by race and restrict their liberty without individual evidence of wrongdoing.',std:'SS.912.A.6.4'},
+        {text:'The order was problematic only because internment conditions were poor - the government had the right to relocate citizens during wartime if housing was adequate',correct:false,feedback:'This argument misses the constitutional issue entirely. The problem was not the quality of the camps but the act of forced removal and detention itself. American citizens who had committed no crime were imprisoned solely because of their ancestry. No improvement in camp conditions would have addressed the fundamental constitutional violation.',std:'SS.912.A.6.4'},
+      ]
+    },
+    {
+      scene:'home_front',location:'American Military Bases and the South',date:'1941-1945 - The Double V Campaign',
+      narrative:'You are an African American soldier stationed at Fort Huachuca, Arizona, 1942. You enlisted to fight for your country. You will be assigned to a segregated unit. On base, you eat in a separate mess from white soldiers, sleep in separate barracks, and are largely commanded by white officers. Black soldiers are frequently assigned to labor and supply units rather than combat roles.\n\nIn February 1942, the Pittsburgh Courier, the nation\'s most widely read Black newspaper, published a letter you sent them. You called for a Double V - victory over fascism abroad and victory over racism at home. The campaign went national. Hundreds of thousands of African Americans wrote in.\n\nYou read the government\'s wartime propaganda. It asks you to fight for democracy. For freedom. For the rights of people everywhere to live without tyranny. You look at the Jim Crow laws governing the town outside the base. You look at the "Whites Only" signs.\n\nThe Tuskegee Airmen are flying combat missions over Europe, distinguishing themselves under fire. They are fighting for a country that will not allow them to vote in Mississippi.',
+      decision:'Which statement best explains the significance of the Double V campaign for the long-term history of American civil rights?',
+      choices:[
+        {text:'It had little lasting effect because African Americans were unable to translate wartime service into civil rights gains until the 1960s',correct:false,feedback:'The Double V campaign had significant immediate and long-term consequences. It accelerated civil rights organizing, built political pressure that contributed to Truman\'s executive order desegregating the military in 1948, and demonstrated the hypocrisy of fighting fascism while maintaining racial apartheid at home. African American veterans returned with heightened expectations and a willingness to fight for equality that directly fed the Civil Rights Movement of the 1950s and 1960s.',std:'SS.912.A.6.4'},
+        {text:'It exposed the contradiction between American democratic ideals and racial practice, building momentum that contributed to postwar civil rights organizing and Truman\'s desegregation of the military',correct:true,feedback:'The Double V campaign was one of the most effective uses of wartime patriotism as a lever for civil rights. If America was fighting a regime that defined people by racial hierarchy, it could not defend racial hierarchy at home without profound hypocrisy. That argument - made by Black newspapers, civil rights organizations, and returning veterans - created political pressure that produced results: Truman desegregated the military in 1948. The NAACP used wartime service as a legal and moral argument in desegregation cases. The groundwork for Brown v. Board of Education was being laid in the 1940s.',std:'SS.912.A.6.4'},
+        {text:'It succeeded completely during the war, as the military eliminated segregation in response to African American sacrifice',correct:false,feedback:'The military remained segregated throughout WWII. African American units like the Tuskegee Airmen and the 761st Tank Battalion fought in segregated formations under significant disadvantages. Desegregation of the military came after the war under Truman\'s Executive Order 9981 in 1948, and even then was implemented slowly. The Double V campaign planted seeds but did not harvest victory during the war itself.',std:'SS.912.A.6.4'},
+        {text:'It discredited African American patriotism by calling for domestic political change during a national security emergency',correct:false,feedback:'This was the argument made by opponents who claimed raising civil rights demands during wartime was disloyal. The argument was wrong both factually and morally. African Americans served and died at the same rates as white Americans. Their patriotism was not diminished by demanding the rights they were supposedly fighting to defend. The Double V campaign was a demonstration of moral clarity, not divided loyalty.',std:'SS.912.A.6.4'},
+      ]
+    },
+  ]
+},
+{
+  id:'two_fronts',num:3,title:'War on Two Fronts',icon:'&#9876;',
+  period:'Europe and the Pacific - 1942-1944',
+  context:'After Pearl Harbor, Allied leaders faced an immediate strategic decision: how to allocate limited forces across a global war. Churchill and FDR agreed on Europe First - Germany posed the greater long-term threat. In the Pacific, the U.S. fought a defensive war while gathering strength, suffering early defeats at Bataan and Corregidor before the naval victory at Midway in June 1942 turned the tide. In Europe, Allied forces fought through North Africa, Italy, and finally Normandy in June 1944. On the Eastern Front, the Soviet Union bore the overwhelming majority of the fighting and dying: 27 million Soviet citizens died compared to 418,000 Americans. Every decision about where to attack and when to open a second front was a decision about whose soldiers would die.',
+  standards:['SS.912.A.6.5'],
+  eocFocus:'Europe First strategy; D-Day; Battle of Midway; Stalingrad; Allied strategy and turning points',
+  keyVocab:[
+    {term:'Europe First',def:'Allied strategic decision to prioritize defeating Germany over Japan, based on Germany\'s greater industrial power and the immediate threat to Britain and the Soviet Union.'},
+    {term:'Battle of Midway (1942)',def:'Decisive naval battle where U.S. forces sank four Japanese aircraft carriers, ending Japanese offensive capability and turning the tide of the Pacific war.'},
+    {term:'D-Day / Operation Overlord (June 6, 1944)',def:'The Allied invasion of Nazi-occupied France at Normandy - the largest amphibious military operation in history, with 156,000 troops on the first day.'},
+    {term:'Island-hopping',def:'American Pacific strategy of capturing key islands while bypassing Japanese strongholds, using captured positions as bases for advancing toward Japan.'},
+  ],
+  cardEarned:'churchill',badge:'two_fronts',
+  timelineEntry:{figure:'dday_44',year:'1944',sprite:'&#9876;',title:'D-Day and the Liberation of Europe',desc:'Operation Overlord opened the western front. Combined with Soviet advances from the east, the invasion put Germany between two massive armies. The liberation of Europe came at enormous cost.'},
+  beats:[
+    {
+      scene:'pacific_europe',location:'Washington D.C. - Allied Command',date:'December 1941 - The Europe First Decision',
+      narrative:'It is late December 1941. Pearl Harbor was three weeks ago. Hitler has declared war on the United States, completing the alliance system. You are a senior military planner at the joint Anglo-American staff conference in Washington.\n\nThe question before you is fundamental: with limited forces and production still ramping up, where do you concentrate American power first?\n\nArguments for Pacific First: Japan just attacked the United States. Public rage demands action. The Philippines are under assault. American territory has been seized. The public wants Japan, not Germany.\n\nArguments for Europe First: Germany controls Europe\'s industrial heartland. Its U-boats threaten the Atlantic lifeline. Britain cannot hold indefinitely. The Soviet Union, absorbing catastrophic casualties, demands a second front. If the Soviet Union collapses, Germany might achieve a negotiated peace and turn its full force on the remaining Allies.\n\nChurchill and the British chiefs press hard for Europe First. The American chiefs are divided. The decision you make today will determine where Americans die first.',
+      decision:'Which argument most convincingly justified the Europe First strategy despite the American public\'s demand for action in the Pacific?',
+      choices:[
+        {text:'American public opinion supported Europe First because Americans felt a stronger cultural connection to Britain than to Pacific nations',correct:false,feedback:'Public opinion actually ran the other way immediately after Pearl Harbor - Americans wanted to fight Japan. The military and political leadership chose Europe First over public sentiment, then managed communication carefully. The argument for Europe First was strategic, not popular. FDR and the chiefs understood that strategy could not be driven by public emotion.',std:'SS.912.A.6.5'},
+        {text:'Germany\'s industrial capacity, combined with the risk of British and Soviet collapse, created a greater long-term threat than Japan\'s military reach could sustain',correct:true,feedback:'This is the core of the Europe First logic. Germany controlled the most productive industrial region in the world and was threatening the survival of both Britain and the Soviet Union - the other two major Allied powers. If either collapsed, Germany might consolidate control of Eurasia, making eventual Allied victory far more costly or impossible. Japan, for all its military strength, was an island nation with limited industrial base and overstretched supply lines. Europe First was a cold strategic calculation about which threat was genuinely existential.',std:'SS.912.A.6.5'},
+        {text:'Japan was a weaker military power than Germany and posed no real threat to American territory in the continental United States',correct:false,feedback:'This understates Japan\'s power. Japan\'s military had conquered most of East Asia and the Pacific by early 1942. Japanese submarines shelled the Oregon coast and launched balloon bomb attacks on the Pacific Northwest. The fear of Japanese attack was not irrational in 1942. The Europe First decision was not based on Japan being weak but on Germany being a greater strategic threat to the Allied coalition as a whole.',std:'SS.912.A.6.5'},
+        {text:'The Pacific was geographically unsuitable for major military operations, making it strategically irrelevant compared to the European land war',correct:false,feedback:'The Pacific was extremely relevant - Japan controlled critical resources, key bases, and sea lanes essential to the entire Pacific theater. The island-hopping campaign that followed was one of the most demanding military operations in American history. Europe First was about prioritizing among multiple urgent demands, not about the Pacific being irrelevant.',std:'SS.912.A.6.5'},
+      ]
+    },
+    {
+      scene:'dday',location:'English Channel and Normandy, France',date:'June 6, 1944 - Operation Overlord',
+      narrative:'It is the night of June 5, 1944. You are Supreme Allied Commander Dwight D. Eisenhower. You have been planning this operation for over a year. 156,000 troops will cross the English Channel tomorrow in the largest amphibious operation in history. 5,000 ships. 11,000 aircraft. Five beaches along the Normandy coast.\n\nThe meteorologists have given you a narrow window of acceptable weather. If you go tomorrow, the weather will be marginal - rough seas, partial cloud cover. If you wait for better weather, you may wait weeks and lose the element of surprise.\n\nYou know the casualty projections. At one beach, codenamed Omaha, your planners estimate 90 percent casualties in the first wave. The German defenses there are strongest.\n\nYou also know that every day you delay, the Soviets die in enormous numbers on the Eastern Front. Stalin has been demanding a second front since 1941. Three years of Soviet sacrifice are behind this moment.\n\nYou have already written a note accepting personal responsibility in the event of failure. Tomorrow morning, you will give the order.',
+      decision:'Which factor most explains why the decision to delay the Normandy invasion until June 1944 rather than launching earlier was strategically justified despite Soviet suffering?',
+      choices:[
+        {text:'Allied commanders delayed because they wanted the Soviet Union to weaken Germany further before committing American and British forces',correct:false,feedback:'This cynical interpretation does not match the operational record. Allied commanders delayed because premature invasion risked catastrophic defeat. The failed British raid at Dieppe in August 1942 demonstrated what happened when Allied forces tried to take a fortified beach without adequate resources. The 1944 invasion succeeded because of massive preparation, air superiority, deception operations, and logistical buildup. A 1942 or 1943 invasion without those assets would likely have failed.',std:'SS.912.A.6.5'},
+        {text:'Allied forces needed time to build overwhelming material superiority, air dominance, and logistical infrastructure before an invasion could succeed rather than merely attempt it',correct:true,feedback:'The 1944 Normandy invasion succeeded because of factors that did not exist in 1942 or 1943: American industrial production had created overwhelming material advantage; Allied air forces had achieved near air superiority over France; deception operations (Operation Bodyguard) successfully convinced the Germans the main invasion would come at Pas-de-Calais; artificial harbors (Mulberry harbors) had been designed to supply the beachhead; and amphibious doctrine had been developed from hard experience in North Africa, Sicily, and Italy. Launching earlier would have meant fewer of these advantages and far greater casualties - or outright failure.',std:'SS.912.A.6.5'},
+        {text:'Churchill\'s insistence on peripheral campaigns in North Africa and Italy represents the best available Allied strategy given resource constraints',correct:false,feedback:'Churchill\'s Mediterranean strategy was genuinely controversial and opposed by many American planners who wanted to concentrate on a direct Channel crossing. The Mediterranean campaigns had strategic value - they drove Italy out of the war and built Allied amphibious experience - but they also delayed the main effort. Whether the delay was wise is still debated. This answer is partially defensible but does not identify the most fundamental reason D-Day waited until 1944.',std:'SS.912.A.6.5'},
+        {text:'The Allied high command lacked confidence in American soldiers until they proved themselves in North Africa',correct:false,feedback:'American soldiers did perform poorly in their first engagement at Kasserine Pass in February 1943, and combat experience mattered. But framing the entire delay as a training problem understates the much larger logistical, material, and strategic factors. By 1944 it was primarily about having the ships, aircraft, tanks, fuel, and deception capabilities to sustain a million-man force across a defended coastline.',std:'SS.912.A.6.5'},
+      ]
+    },
+    {
+      scene:'pacific_europe',location:'Midway Atoll, Central Pacific',date:'June 4-7, 1942 - The Battle of Midway',
+      narrative:'You are a naval intelligence officer at Pearl Harbor, June 1942. Your team has broken Japanese naval codes and identified Midway Atoll as the target of a massive Japanese carrier force. Admiral Nimitz has chosen to believe your assessment.\n\nThe Japanese plan is to lure the American fleet into battle and destroy it. Japan will have four fleet carriers, hundreds of aircraft, and a massive surface fleet. The United States has three carriers - one of which, the Yorktown, was damaged at Coral Sea and repaired in 72 hours in a feat of engineering that should have taken months.\n\nYour pilots are outmatched individually. Japanese Zero fighters are superior. Their pilots have more experience. But you have one decisive advantage: you know where they are going, and they do not know you know.\n\nOn June 4, American dive bombers will sink three Japanese carriers in five minutes. A fourth will follow. Japan will never again have the offensive carrier capability it had that morning.',
+      decision:'What does the American victory at Midway reveal about the nature of industrial-age warfare that went beyond individual military skill?',
+      choices:[
+        {text:'It proves that intelligence and technology are always more decisive than the courage or training of individual soldiers and sailors',correct:false,feedback:'Intelligence was critical at Midway, but individual courage was equally essential. Dive bomber pilots flew through devastating anti-aircraft fire and Zero fighter opposition. The torpedo bomber squadrons that preceded them were nearly annihilated, but their sacrifice drew Japanese fighters to low altitude, leaving the carriers exposed to dive bombers. Neither technology alone nor courage alone won the battle - the combination mattered.',std:'SS.912.A.6.5'},
+        {text:'It demonstrates that in industrial warfare, information superiority, production capacity, and the ability to sustain and replace losses often determine outcomes more than individual engagements',correct:true,feedback:'Midway is the pivotal example of how industrial-age warfare differs from earlier conflicts. The U.S. could repair the Yorktown in 72 hours because American industrial infrastructure was capable of it. The U.S. could replace aircraft and pilots lost at Midway because American production was overwhelming Japan\'s capacity. Japan lost four irreplaceable fleet carriers. The U.S. would build over 100 carriers during the war. Individual battles matter, but the ability to sustain and replace losses is ultimately what determines who wins a long war.',std:'SS.912.A.6.5'},
+        {text:'It shows that naval warfare had become entirely determined by airpower, making traditional surface fleet engagements obsolete by 1942',correct:false,feedback:'Midway demonstrated the decisive importance of carrier airpower, but surface fleets, submarines, and shore-based artillery remained central to the war. The Battle of Leyte Gulf in 1944 involved massive surface fleet engagements. German U-boats shaped the entire Atlantic campaign. The exclusive focus on airpower overlooks the combined-arms nature of naval warfare in WWII.',std:'SS.912.A.6.5'},
+        {text:'It reveals that Japan\'s strategic planning was fundamentally flawed from the beginning, making eventual American victory inevitable regardless of early setbacks',correct:false,feedback:'Hindsight can make defeat look inevitable, but it was not. Japan\'s early campaigns were remarkably successful. The outcome at Midway turned on specific intelligence, command decisions, and tactical execution that could have gone differently. Japan\'s strategic problems were real but not automatically fatal. Midway accelerated the Japanese strategic crisis rather than simply revealing an inevitable outcome.',std:'SS.912.A.6.5'},
+      ]
+    },
+  ]
+},
+{
+  id:'shadow_history',num:4,title:'The Shadow of History',icon:'&#9729;',
+  period:'Europe and the Pacific - 1941-1945',
+  context:'World War II produced two moral catastrophes that define its legacy: the Holocaust and the atomic bombings of Japan. The Holocaust was the systematic murder of six million Jews and five million others by the Nazi regime - not hidden from Allied governments, which received detailed reports by 1942. The atomic bomb was the product of the Manhattan Project, a three-year, $2 billion effort employing 130,000 people. President Truman\'s decision to use it against Hiroshima and Nagasaki in August 1945 killed between 130,000 and 226,000 people, most of them civilians. Japan surrendered within days. Both events raised questions about ends and means, collective responsibility, and the obligations of powerful nations that have never been fully resolved.',
+  standards:['SS.912.A.6.6','SS.912.A.6.7'],
+  eocFocus:'Holocaust; Manhattan Project; atomic bomb decision; civilian casualties; moral responsibility',
+  keyVocab:[
+    {term:'Holocaust',def:'The systematic, state-sponsored persecution and murder of six million Jews by the Nazi regime between 1941 and 1945, along with millions of others deemed racially or politically undesirable.'},
+    {term:'Manhattan Project',def:'The secret American program begun in 1942 that developed the first nuclear weapons. First successful test was July 16, 1945, at Trinity site in New Mexico.'},
+    {term:'Hiroshima and Nagasaki',def:'Japanese cities destroyed by American atomic bombs on August 6 and 9, 1945, killing 130,000-226,000 people. Japan announced surrender on August 15.'},
+    {term:'Nuremberg Trials',def:'Post-war tribunal prosecuting Nazi leaders for war crimes and crimes against humanity - establishing that following orders is not a defense for atrocities.'},
+  ],
+  cardEarned:'tuskegee',badge:'liberation',
+  timelineEntry:{figure:'holocaust_45',year:'1945',sprite:'&#9729;',title:'Liberation and Reckoning',desc:'Allied forces liberated Nazi concentration camps in spring 1945. The scale of the Holocaust shocked the world. The Nuremberg Trials established that crimes against humanity cannot be defended by appeals to orders or nationality.'},
+  beats:[
+    {
+      scene:'holocaust',location:'Washington D.C. and Europe',date:'1942-1944 - Knowledge and Response',
+      narrative:'It is 1943. You are a senior official at the U.S. State Department. On your desk is a detailed cable from the World Jewish Congress confirming what has been rumored for months: the German government is systematically murdering Jews across occupied Europe in purpose-built death camps. The numbers are staggering - hundreds of thousands already dead, the killing continuing at scale.\n\nThe Allied governments have had fragmentary reports since 1942. The New York Times published information about the deportations - on page 10. The government\'s response has been to focus on winning the war, on the grounds that military victory is the only real solution.\n\nAdvocates for rescue ask for two things: admission of Jewish refugees to the United States (immigration quotas that are not being filled) and the bombing of rail lines leading to Auschwitz, which would disrupt the deportation transports.\n\nThe arguments against: immigration quotas are law and changing them requires Congress; railroad bombing would divert aircraft from military targets and might not stop the killing; winning the war is the only real solution; some State Department officials have quietly been suppressing reports to avoid pressure to act.',
+      decision:'Which assessment of Allied knowledge and response to the Holocaust during the war is most historically accurate?',
+      choices:[
+        {text:'Allied leaders did not know about the Holocaust until they liberated the camps in 1945, so they cannot be held responsible for failing to respond',correct:false,feedback:'This is historically false. Detailed reports of mass killings reached Allied governments by 1942. Jan Karski, a Polish courier, personally briefed FDR and Churchill on the killing operations. The World Jewish Congress presented documentation to Allied officials. The New York Times reported on deportations and mass killings. The question is not whether they knew but what they chose to do with what they knew.',std:'SS.912.A.6.6'},
+        {text:'Allied leaders knew the general outlines of the Holocaust by 1942 but prioritized military victory, made limited efforts to rescue Jews, and chose not to bomb Auschwitz - decisions that historians continue to debate and many have condemned',correct:true,feedback:'This is the historically accurate and morally serious assessment. The debate among historians is not about whether Allied leaders knew - they did - but about whether more could have been done. The case for action: the rail lines to Auschwitz were within range of Allied bombers by summer 1944; the War Refugee Board was not established until January 1944, two years after detailed knowledge reached the government; existing immigration quotas were not filled even as Jews were being killed. The case against: military planners argued bombing camps might kill prisoners; disrupting rail lines had limited effect; winning the war was the most effective rescue strategy. The honest answer is that the Allied response was inadequate, and political considerations including antisemitism in the State Department played a role.',std:'SS.912.A.6.6'},
+        {text:'Allied leaders made every reasonable effort to stop the Holocaust, but the military realities of fighting a two-front war made intervention impossible',correct:false,feedback:'This overstates Allied efforts. The U.S. did not fill its existing immigration quotas with Jewish refugees in the 1930s. The War Refugee Board was not established until 1944. Bombing of Auschwitz rail lines was specifically rejected by the War Department in summer 1944, even though Allied bombers were striking industrial targets in the same region. "Every reasonable effort" does not describe the historical record.',std:'SS.912.A.6.6'},
+        {text:'The Holocaust could not have been stopped by military action because its perpetrators would simply have improvised alternatives to rail transport',correct:false,feedback:'This argument overstates German operational flexibility. Deportations required massive logistical coordination; disrupting rail transport would have slowed the killing rate even if it could not stop it entirely. More fundamentally, this conflates tactical feasibility with moral responsibility. The question is not whether bombing would have ended the Holocaust entirely but whether it might have saved hundreds of thousands of lives - and whether that obligation should have weighed more heavily in Allied calculations.',std:'SS.912.A.6.6'},
+      ]
+    },
+    {
+      scene:'atomic_bomb',location:'Washington D.C. and the Pacific',date:'Summer 1945 - The Atomic Decision',
+      narrative:'It is July 1945. You are a senior advisor to President Harry Truman. Germany surrendered in May. Japan fights on. The military is planning Operation Downfall, the invasion of Japan\'s home islands: analysts project 250,000 to over 1 million American casualties and potentially millions of Japanese casualties, military and civilian.\n\nThe Manhattan Project has just successfully tested the atomic bomb in New Mexico. Two bombs are ready.\n\nThe options before Truman:\n1. Invade Japan. Massive casualties on both sides. The Soviet Union has promised to declare war on Japan in August, which might accelerate a Japanese collapse.\n2. Continue conventional bombing and naval blockade. The blockade is strangling Japan\'s fuel and food supply. Some analysts believe Japan might surrender within months without invasion.\n3. Demonstrate the bomb on a military target or uninhabited area with warning given in advance.\n4. Use the atomic bomb without warning on populated cities to shock Japan into surrender.\n\nTruman chooses option 4.',
+      decision:'Which argument in the ongoing historical debate about the atomic bomb decision is best supported by the available evidence?',
+      choices:[
+        {text:'The bomb was clearly necessary to end the war and save American lives - without it, an invasion would have been the only alternative',correct:false,feedback:'This argument was the official justification and has genuine force, but it oversimplifies the choice. The binary "bomb or invasion" framing ignores real alternatives: Soviet entry into the war on August 8 was a significant shock to Japanese decision-makers; continued naval blockade and conventional bombing were already devastating Japan; Japanese peace feelers were being sent through third parties. The projected casualty figures for invasion varied enormously among military planners. The "bomb was necessary" argument is strongest when comparing the bomb directly to invasion - but the choice was not simply between those two options.',std:'SS.912.A.6.7'},
+        {text:'The atomic bombs were used primarily to intimidate the Soviet Union rather than defeat Japan, making them a first act of Cold War diplomacy',correct:false,feedback:'This interpretation has influenced the debate but is not the consensus view. Most historians accept that defeating Japan was the primary motivation, while acknowledging that American officials were aware the bomb would affect postwar diplomacy with the Soviet Union. The "Cold War diplomacy" thesis overstates the Soviet factor and understates genuine concerns about invasion casualties.',std:'SS.912.A.6.7'},
+        {text:'The atomic bomb decision remains genuinely contested among historians, raising unresolved moral questions about targeting civilians, the existence of alternatives, and the obligations of military necessity',correct:true,feedback:'This is the most historically defensible position because it accurately describes the state of the debate. The decision cannot be reduced to a simple right or wrong answer. Multiple considerations were in genuine tension: the real prospect of enormous invasion casualties; the existence of alternatives that were not fully explored; the decision to target civilian populations rather than purely military objectives; the question of whether warning or demonstrating the bomb might have achieved surrender without mass civilian deaths. Historians continue to disagree because the available evidence genuinely supports multiple interpretations. What is clear is that the decision killed over 100,000 civilians, ended the war, and opened the nuclear age - and all of those facts carry moral weight.',std:'SS.912.A.6.7'},
+        {text:'The atomic bombings were war crimes equivalent to the Holocaust and should be judged by the same moral standard applied at Nuremberg',correct:false,feedback:'The Nuremberg standard addressed systematic racial extermination as state policy - categorically different from the atomic bombings, which were military actions taken to end a war, however devastating their civilian effects. Equating them conflates very different moral and historical contexts. The atomic bombings raise serious questions about deliberately targeting civilians and the principle of proportionality - but those questions exist within the laws of war and just war theory, not the genocide framework.',std:'SS.912.A.6.7'},
+      ]
+    },
+  ]
+},
+{
+  id:'victory_reckoning',num:5,title:'Victory and Reckoning',icon:'&#127760;',
+  period:'1945 and Beyond - Building the Postwar World',
+  context:'The end of World War II left the United States as the most powerful nation in history: the only major power whose territory was undamaged, possessing two thirds of the world\'s gold reserves and the atomic bomb. With that power came choices. Would the United States return to the isolationism of the 1930s, or accept a permanent role in managing world affairs? The answers took shape quickly: the United Nations, the World Bank, the GI Bill, the Nuremberg Trials, then the Marshall Plan and NATO. The U.S. chose engagement. The Cold War immediately tested that choice. And the contradictions of American democracy - in race, in economics, in civil liberties - were not resolved by victory. The veterans who came home knew they had fought for something. What exactly, and whether America was living up to it, was the next question.',
+  standards:['SS.912.A.6.8','SS.912.A.7.1'],
+  eocFocus:'Postwar international order; United Nations; GI Bill; Cold War origins; rejection of isolationism; Nuremberg',
+  keyVocab:[
+    {term:'United Nations (1945)',def:'International organization founded after WWII to promote collective security and prevent future world wars - a direct response to the failure of the League of Nations.'},
+    {term:'GI Bill (1944)',def:'Servicemen\'s Readjustment Act providing veterans with college education benefits, low-interest home loans, and unemployment insurance - helped create the postwar middle class.'},
+    {term:'Nuremberg Trials (1945-1946)',def:'Trials of senior Nazi officials for war crimes and crimes against humanity - established that individuals are legally responsible for atrocities regardless of orders or nationality.'},
+    {term:'Marshall Plan (1948)',def:'American program providing $13 billion to rebuild Western European economies - combining humanitarian aid with the strategic goal of preventing communist political expansion.'},
+  ],
+  cardEarned:'truman',badge:'new_world',
+  timelineEntry:{figure:'un_45',year:'1945',sprite:'&#127760;',title:'Building the Postwar Order',desc:'The United States rejected isolationism and accepted global leadership. The UN, Marshall Plan, and NATO created institutions to manage international conflict. The Cold War immediately challenged the new order.'},
+  beats:[
+    {
+      scene:'postwar',location:'San Francisco, California',date:'April-June 1945 - Founding the United Nations',
+      narrative:'You are a U.S. delegate to the San Francisco Conference, April 1945. FDR died three weeks ago. Truman continues the conference. Fifty nations are meeting to draft the United Nations Charter.\n\nThe memory of the League of Nations hangs over everything. The Senate rejected the League in 1920. Wilson\'s dream died because it required the United States to surrender sovereignty over decisions about war and peace to an international body - and the Senate would not do that.\n\nThe UN is being designed differently. The Security Council gives five major powers - the U.S., Britain, France, China, and the Soviet Union - permanent membership and veto power. No power can be forced into action it vetoes. The U.S. is protected from being outvoted.\n\nCritics from the left argue this creates a great power club that will bully smaller nations. Critics from the right argue the U.S. still surrenders too much sovereignty. Supporters argue it is the minimum necessary framework for preventing another world war.\n\nYou are drafting the argument for Senate ratification.',
+      decision:'Which argument best explains why the United States chose to lead the creation of international institutions after WWII rather than returning to the isolationism of the 1930s?',
+      choices:[
+        {text:'American leaders concluded that the Great Depression and WWII both resulted from the absence of stable international institutions, and that American power was the only force capable of building them',correct:true,feedback:'This captures the core of postwar American internationalism. The architects of the postwar order believed the Great Depression had been worsened by economic nationalism and that WWII had resulted from the absence of collective security mechanisms to deter aggression. Only the United States had the economic power, military strength, and political stability to anchor both an international economic order and a security framework. American engagement was not altruistic - it was based on the judgment that a stable world order was essential to American security and prosperity, and that the U.S. was the only nation capable of creating it.',std:'SS.912.A.6.8'},
+        {text:'American public opinion had permanently shifted from isolationism to internationalism as a result of Pearl Harbor, making engagement automatic',correct:false,feedback:'Public opinion did shift significantly during the war, but postwar internationalism was not automatic. Isolationist sentiment revived after the war, particularly on the right. The Senate debate over the UN was genuinely contested. The Marshall Plan required a major presidential campaign to win congressional support. American engagement was a choice made by political leaders who persuaded a skeptical public - not the natural outcome of a permanent shift in public sentiment.',std:'SS.912.A.6.8'},
+        {text:'The United States took the lead in building international institutions primarily to prevent the Soviet Union from filling the power vacuum in war-devastated Europe',correct:false,feedback:'Anti-Soviet considerations were certainly present and became dominant after 1947. But the foundational institutions, particularly the UN, World Bank, and IMF, were designed during the war when the Soviet Union was still an ally, and their purpose was genuinely internationalist. The Cold War logic became primary later, but it was not the founding motivation.',std:'SS.912.A.6.8'},
+        {text:'American leaders were morally obligated to lead postwar reconstruction because American military power was the primary reason for Allied victory',correct:false,feedback:'This understates the massive Soviet contribution - 27 million Soviet deaths, the bulk of German army casualties, and years of brutal fighting before D-Day. The Soviet Union\'s role in Allied victory was at least as significant as the American contribution. A moral argument based on being the primary cause of victory would not be historically defensible.',std:'SS.912.A.6.8'},
+      ]
+    },
+    {
+      scene:'postwar',location:'United States',date:'1945-1946 - Veterans Return and the GI Bill',
+      narrative:'It is 1946. Sixteen million Americans served in the armed forces during WWII. Over 400,000 died. Now the survivors are coming home.\n\nThe GI Bill, signed in 1944, offers veterans: one year of unemployment benefits, low-interest home loans, and funds for college education or job training. Eight million veterans will use the education benefit. Millions will use the home loan program to buy houses in new suburban developments.\n\nBut the GI Bill is administered locally. In the South - and in much of the North - the benefits are systematically denied to Black veterans. Black colleges lack the capacity to absorb eligible students. Banks in many states refuse to process the home loans. Black veterans who try to vote face the same violence and disenfranchisement as before the war.\n\nIn July 1946, Sergeant Isaac Woodard, recently discharged after serving in the Pacific, is beaten and blinded by a South Carolina sheriff while still in uniform.\n\nThis becomes one of the cases that motivates President Truman to establish the President\'s Committee on Civil Rights in 1946 and to issue Executive Order 9981 desegregating the military in 1948.',
+      decision:'Which statement most accurately describes the GI Bill\'s impact on American society, including its contradictions?',
+      choices:[
+        {text:'The GI Bill was a universal success that created the American middle class by providing equal benefits to all veterans regardless of race',correct:false,feedback:'The GI Bill created enormous opportunity for white veterans but systematically excluded or shortchanged Black veterans through discriminatory local administration. This was not a minor exception - it was a structural feature of how the bill was administered across much of the country. The suburban expansion, the college enrollment boom, and the wealth-building that followed disproportionately benefited white Americans. The GI Bill widened rather than narrowed the racial wealth gap.',std:'SS.912.A.7.1'},
+        {text:'The GI Bill expanded opportunity for millions of white veterans while Black veterans were systematically excluded from many benefits through discriminatory local administration, deepening racial economic inequality',correct:true,feedback:'For white veterans, the GI Bill was transformative - it sent millions to college, created the suburban homeowning middle class, and drove postwar prosperity. For Black veterans, the experience was far more complex. Veterans\' hospitals were segregated. Black colleges could not absorb all eligible students. Southern banks refused to process GI home loans to Black applicants. The administration of the bill reproduced the racial hierarchy of American society. The irony was profound: men who risked their lives for democracy came home to a country that would not let them vote or buy a house in the neighborhood of their choice.',std:'SS.912.A.7.1'},
+        {text:'The GI Bill had little lasting economic impact because most veterans chose not to use its benefits',correct:false,feedback:'The GI Bill had an enormous lasting economic impact. Eight million veterans used the education benefit. Nearly four million took out home loans. The program directly shaped American society in the postwar decades, contributing to the suburban expansion, the growth of higher education, and the creation of a broad white middle class. The claim that veterans did not use the benefits is simply false.',std:'SS.912.A.7.1'},
+        {text:'The racial limitations of the GI Bill were quickly corrected when Truman desegregated the military in 1948',correct:false,feedback:'Military desegregation was an important step, but it did not address the GI Bill\'s structural inequalities in housing and education. The wealth gap created by decades of redlining, discriminatory lending, and exclusion from the postwar suburban boom was not remedied by military desegregation. The economic consequences of the GI Bill\'s discriminatory administration persisted for generations.',std:'SS.912.A.7.1'},
+      ]
+    },
+    {
+      scene:'postwar',location:'Nuremberg, Germany',date:'1945-1946 - The Nuremberg Trials',
+      narrative:'You are an American prosecutor at the International Military Tribunal in Nuremberg, Germany. November 1945. Twenty-one senior Nazi officials sit in the dock, charged with crimes against peace, war crimes, and crimes against humanity.\n\nYour case rests on a new legal framework. The defendants argue: "We were following orders. We were acting under the law of our nation. There was no international law that made our actions illegal at the time we committed them."\n\nYour response is the argument that created modern international human rights law:\n\nSome acts are so fundamentally incompatible with human dignity that no legal system can authorize them. The existence of a law ordering an atrocity does not make the atrocity legal. Military and civilian officials have a personal obligation to refuse orders requiring them to commit crimes against humanity. Sovereignty does not extend to genocide.\n\nThe defendants are convicted on multiple counts. Twelve are sentenced to death.\n\nThe world has never been the same since.',
+      decision:'Which argument best explains the long-term significance of the Nuremberg Trials for international law and American foreign policy?',
+      choices:[
+        {text:'The trials established that war crimes tribunals are only legitimate when conducted by the victorious power, making them a form of "victor\'s justice" with no broader legal authority',correct:false,feedback:'The "victor\'s justice" critique is real and was raised at the time - the Soviets had committed their own atrocities, including the Katyn massacre, which was not prosecuted. But the trials also established genuine legal precedents later applied universally through the Geneva Conventions, the Genocide Convention, and the International Criminal Court. The critique explains a limitation of the trials without negating their legal significance.',std:'SS.912.A.6.8'},
+        {text:'The trials created an enduring precedent that individuals are responsible for crimes against humanity regardless of orders, national law, or military rank - a foundation for modern international human rights law',correct:true,feedback:'This is the central historical significance of Nuremberg. Before the trials, international law dealt primarily with relations between states. The Nuremberg precedent established that individuals could be held accountable for atrocities by an international tribunal, that following orders was not a defense, and that crimes against humanity violated a law higher than any national legal system. This framework became the foundation for the UN Genocide Convention (1948), the Universal Declaration of Human Rights (1948), the Geneva Conventions (1949), and eventually the International Criminal Court. Every war crimes prosecution since Nuremberg rests on the legal architecture built there.',std:'SS.912.A.6.8'},
+        {text:'The trials had no lasting impact because no similar tribunal was convened until the 1990s',correct:false,feedback:'The absence of formal tribunals between 1946 and the 1990s does not demonstrate that the Nuremberg precedent was ignored. The legal framework was incorporated into the Geneva Conventions and multiple international human rights instruments. The Yugoslavia and Rwanda tribunals in the 1990s explicitly invoked the Nuremberg precedent, and the International Criminal Court is a direct institutional descendant of Nuremberg.',std:'SS.912.A.6.8'},
+        {text:'The trials were primarily important for American domestic politics, giving the public a sense of justice, rather than for their impact on international law',correct:false,feedback:'The trials had significant domestic dimensions, but their international legal impact was real and lasting. Chief U.S. Prosecutor Robert Jackson, who took leave from the Supreme Court to lead the prosecution, understood he was building a legal framework for the future. His opening statement explicitly addressed the international legal audience and laid out principles designed to endure beyond the specific case.',std:'SS.912.A.6.8'},
+      ]
+    },
+  ]
+},
+];
+const RANKS=[
+  {level:1,score:0,name:'Curious Citizen'},
+  {level:2,score:300,name:'History Student'},
+  {level:3,score:800,name:'War Correspondent'},
+  {level:4,score:1500,name:'Field Analyst'},
+  {level:5,score:2500,name:'Senior Advisor'},
+  {level:6,score:4000,name:'War Historian'},
+  {level:7,score:6000,name:'Chief Strategist'},
+  {level:8,score:9000,name:'Master Historian'},
+];
+function getRank(){const r=[...RANKS].reverse().find(r=>G&&G.score>=r.score);return r||RANKS[0];}
+function newGame(){return {name:'',teacher:'guest',period:'guest-0',avatarId:'advisor',outfitId:'civilian',score:0,gold:0,level:1,momentum:70,maxMomentum:100,completedChapters:[],chapterReports:{},earnedBadges:[],unlockedCards:[],unlockedOutfits:['civilian'],purchasedItems:[],timelineUnlocked:[],totalAnswers:0,correctAnswers:0,isTeacher:false};}
+function save(){if(!G)return;try{localStorage.setItem(SAVE_KEY,JSON.stringify(G));}catch(e){}}
+function load(){try{const d=localStorage.getItem(SAVE_KEY);if(d){G=JSON.parse(d);return true;}}catch(e){}return false;}
+
+function updateHUD(){
+  if(!G)return;
+  const av=AVATARS.find(a=>a.id===G.avatarId);const svg=av?makeAvatar(av.id):'';
+  document.getElementById('hud-avatar-el').innerHTML='<div style="width:42px;height:42px">'+svg+'</div>';
+  document.getElementById('hud-name').textContent=G.name||'Historian';
+  document.getElementById('hud-rank').textContent=getRank().name;
+  document.getElementById('hud-momentum-bar').style.width=(G.momentum/G.maxMomentum*100)+'%';
+  document.getElementById('hud-score').textContent=(G.score||0).toLocaleString();
+  document.getElementById('hud-level').textContent='Lv.'+getRank().level;
+  document.getElementById('hud-cards').textContent=(G.unlockedCards||[]).length;
+  document.getElementById('hud-gold').textContent=G.gold||0;
+}
+
+let _lbPeriod='all';
+async function pushLeaderboard(){
+  if(!G||!G.name||G.isTeacher)return;
+  try{await fetch(SUPA_URL+'/rest/v1/scores',{method:'POST',headers:{...SUPA_HEADERS,'Prefer':'resolution=merge-duplicates'},body:JSON.stringify({game:'arsenal_democracy',name:G.name,period:G.period,teacher:G.teacher,score:G.score,chapters:G.completedChapters.length,correctAnswers:G.correctAnswers,totalAnswers:G.totalAnswers,rank:getRank().name,updatedAt:new Date().toISOString()})});}catch(e){}
+}
+function openLeaderboard(){
+  const tabs=['all','3','5','6','1','2','4','7'];
+  document.getElementById('lb-period-tabs').innerHTML=tabs.map(t=>'<div class="lb-tab '+((_lbPeriod===t)?'active':'')+'" onclick="setLbPeriod(\''+t+'\')">'+(t==='all'?'All':'Pd '+t)+'</div>').join('');
+  loadLeaderboard();
+  document.getElementById('lb-overlay').classList.add('show');
+}
+function setLbPeriod(p){_lbPeriod=p;document.querySelectorAll('#lb-period-tabs .lb-tab').forEach((t,i)=>t.classList.toggle('active',['all','3','5','6','1','2','4','7'][i]===p));loadLeaderboard();}
+async function loadLeaderboard(){
+  document.getElementById('lb-content').innerHTML='<div style="font-family:var(--crimson);color:var(--text3);font-style:italic;padding:20px">Loading...</div>';
+  try{
+    const res=await fetch(SUPA_URL+'/rest/v1/scores?game=eq.arsenal_democracy&order=score.desc&limit=500',{headers:SUPA_HEADERS});
+    const all=await res.json();renderLb(all,_lbPeriod);
+  }catch(e){document.getElementById('lb-content').innerHTML='<div style="font-family:var(--crimson);color:var(--text3);font-style:italic;padding:20px">Could not load leaderboard.</div>';}
+}
+function renderLb(all,period){
+  if(!all)return;
+  const myTeacher=G?G.teacher:'guest';
+  let students=all.filter(s=>!s.isTeacher);
+  const list=period==='all'?students.filter(s=>s.teacher===myTeacher):students.filter(s=>s.period===myTeacher+'-'+period||s.period===period);
+  const sorted=[...list].sort((a,b)=>(b.score||0)-(a.score||0));
+  if(!sorted.length){document.getElementById('lb-content').innerHTML='<div style="font-family:var(--crimson);color:var(--text3);font-style:italic;padding:20px">No entries yet.</div>';return;}
+  document.getElementById('lb-content').innerHTML='<table class="lb-table"><thead><tr><th>#</th><th>STUDENT</th><th>SCORE</th><th>CHAPTERS</th><th>CORRECT%</th></tr></thead><tbody>'+sorted.map((s,i)=>{
+    const isMe=G&&s.name===G.name&&s.period===G.period;
+    const acc=s.totalAnswers>0?Math.round((s.correctAnswers||0)/s.totalAnswers*100):'-';
+    return '<tr class="'+(isMe?'lb-you':'')+'"><td style="font-family:var(--dm);font-size:10px;color:var(--text3)">'+(i+1)+'</td><td><div class="lb-name">'+(s.name||'-')+'</div><div style="font-size:9px;color:var(--teal)">'+(s.rank||'')+'</div></td><td class="lb-score">'+((s.score||0).toLocaleString())+'</td><td style="font-family:var(--dm);font-size:10px;color:var(--text2)">'+(s.chapters||0)+'/'+CHAPTERS.length+'</td><td style="font-family:var(--dm);font-size:10px;color:var(--amber)">'+acc+(acc!=='-'?'%':'')+'</td></tr>';
+  }).join('')+'</tbody></table>';
+}
+
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active');window.scrollTo(0,0);}
+function setActiveNav(idx){document.querySelectorAll('.bn-btn').forEach((b,i)=>b.classList.toggle('active',i===idx));}
+function notify(msg,type){const n=document.createElement('div');n.className='notif '+(type||'');n.textContent=msg;document.body.appendChild(n);setTimeout(()=>n.remove(),3500);}
+
+function init(){
+  const bar=document.getElementById('loading-bar');
+  let pct=0;const iv=setInterval(()=>{
+    pct+=Math.random()*20;if(pct>=100){pct=100;clearInterval(iv);
+      setTimeout(()=>{
+        const ls=document.getElementById('loading-screen');ls.style.opacity='0';setTimeout(()=>ls.style.display='none',500);
+        if(load()&&G&&G.name)document.getElementById('btn-continue').style.display='block';
+        document.getElementById('title-scene-art').innerHTML=SCENES.title_wwii||'';
+      },200);
+    }
+    bar.style.width=Math.min(100,pct)+'%';
+  },120);
+}
+
+function startNewGame(){document.getElementById('code-gate-overlay').style.display='flex';['login-step-1','login-step-2','login-step-3'].forEach((id,i)=>document.getElementById(id).style.display=i===0?'block':'none');}
+function continueGame(){if(load()&&G&&G.name){showGameUI();renderHub();showScreen('hub-screen');}}
+let _selectedTeacher=null,_selectedPeriod=null;
+function selectTeacher(t){
+  _selectedTeacher=t;
+  if(t==='guest'){G=newGame();G.teacher='guest';G.period='guest-0';save();showCharScreen();document.getElementById('code-gate-overlay').style.display='none';return;}
+  goToStep(2);
+}
+function goToStep(n){
+  [1,2,3].forEach(i=>document.getElementById('login-step-'+i).style.display=i===n?'block':'none');
+  if(n===2&&_selectedTeacher){
+    const t=TEACHERS[_selectedTeacher];
+    document.getElementById('period-buttons').innerHTML=(t.periods||[]).map(p=>'<div onclick="selectPeriod(\''+p+'\')" style="padding:12px;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg3);font-family:var(--bebas);font-size:20px;color:var(--amber);text-align:center">Period '+p+'</div>').join('');
+  }
+}
+function selectPeriod(p){
+  _selectedPeriod=p;
+  const t=TEACHERS[_selectedTeacher];
+  document.getElementById('login-step3-label').textContent=(t?t.name+' - ':'')+'Period '+p;
+  document.getElementById('code-error').textContent='';document.getElementById('class-code-input').value='';goToStep(3);
+}
+function submitClassCode(){
+  const name=document.getElementById('class-code-input').value.trim();
+  if(!name||name.length<2){document.getElementById('code-error').textContent='Please enter your name.';return;}
+  G=newGame();G.name=name;G.teacher=_selectedTeacher||'guest';
+  G.period=(_selectedTeacher&&_selectedPeriod)?(_selectedTeacher+'-'+_selectedPeriod):'guest-0';
+  save();document.getElementById('code-gate-overlay').style.display='none';showCharScreen();
+}
+function showCharScreen(){if(!G)G=newGame();renderAvatarGrid();renderOutfitGridCreator();updateCharPreview();showScreen('char-screen');}
+function submitTeacherCode(){
+  const code=document.getElementById('teacher-code-input').value.trim().toUpperCase();
+  const match=Object.values(TEACHERS).find(t=>t.teacherCode===code);
+  if(!match){document.getElementById('teacher-code-err').textContent='Invalid code.';return;}
+  G=newGame();G.name='Teacher ('+match.name+')';G.period='T';G.isTeacher=true;G.teacher=Object.keys(TEACHERS).find(k=>TEACHERS[k]===match);
+  save();showGameUI();renderHub();showScreen('hub-screen');
+  document.getElementById('teacher-login-box').style.display='none';
+  notify('Welcome, '+match.name+'! Teacher mode active.','green');
+}
+function renderAvatarGrid(){
+  if(!G)return;const grid=document.getElementById('avatar-grid');if(!grid)return;
+  let html='';
+  AVATAR_ERAS.forEach(era=>{
+    const eraAvatars=AVATARS.filter(a=>a.era===era.id);if(!eraAvatars.length)return;
+    html+='<div style="width:100%;font-family:var(--dm);font-size:8px;color:var(--text3);letter-spacing:2px;margin:6px 0 4px;text-transform:uppercase">'+era.label+'</div>';
+    eraAvatars.forEach(av=>{
+      const unlocked=!av.unlockScore||(G&&G.score>=av.unlockScore);const selected=G&&G.avatarId===av.id;
+      html+='<div class="avatar-opt '+(selected?'selected':'')+' '+(!unlocked?'locked':'')+'" '+(unlocked?'onclick="selectAvatar(\''+av.id+'\')"':'')+' title="'+(unlocked?av.desc:'Unlock at '+(av.unlockScore||0)+' pts')+'"><div style="width:44px;height:44px">'+makeAvatar(av.id)+'</div><div class="avatar-opt-label">'+av.badge+' '+av.label+'</div>'+(!unlocked?'<div style="font-family:var(--dm);font-size:6px;color:var(--amber2)">Unlock at '+av.unlockScore+'</div>':'')+'</div>';
+    });
+  });
+  grid.innerHTML=html;
+}
+function selectAvatar(id){G.avatarId=id;renderAvatarGrid();updateCharPreview();}
+function updateCharPreview(){
+  const nameInput=document.getElementById('name-input').value;if(G)G.name=nameInput;
+  document.getElementById('char-preview-name').textContent=nameInput||'Your Name';
+  const av=AVATARS.find(a=>a.id===(G?G.avatarId:'advisor'));
+  document.getElementById('char-preview-avatar').innerHTML=av?makeAvatar(av.id):'';
+  document.getElementById('char-preview-title').textContent=(av?av.label:'Advisor')+' - 1939';
+}
+function renderOutfitGridCreator(){
+  if(!G)return;const grid=document.getElementById('outfit-grid-creator');if(!grid)return;
+  grid.innerHTML=OUTFITS.map(o=>{
+    const locked=o.unlockChapter&&G.completedChapters.length<o.unlockChapter;
+    return '<div class="outfit-opt '+(G.outfitId===o.id?'selected':'')+' '+(locked?'locked':'')+'" onclick="selectOutfit(\''+o.id+'\')"><div class="outfit-icon">'+o.icon+'</div><div class="outfit-name">'+o.name+'</div><div class="outfit-cost">'+(locked?'Ch.'+o.unlockChapter:(o.cost>0?o.cost+' gold':'FREE'))+'</div></div>';
+  }).join('');
+}
+function selectOutfit(id){G.outfitId=id;renderOutfitGridCreator();updateCharPreview();}
+function confirmCharacter(){
+  const name=document.getElementById('name-input').value.trim();
+  if(!name){notify('Please enter your name.','red');document.getElementById('name-input').focus();return;}
+  G.name=name;save();showGameUI();renderHub();showScreen('hub-screen');
+}
+function showGameUI(){
+  document.getElementById('game-header').style.display='block';
+  document.getElementById('bottom-nav').style.display='grid';
+  updateHUD();
+}
+function renderHub(){
+  if(!G)return;
+  const av=AVATARS.find(a=>a.id===G.avatarId);const svg=av?makeAvatar(av.id):'';
+  document.getElementById('hub-avatar').innerHTML='<div style="width:60px;height:60px">'+svg+'</div>';
+  document.getElementById('hub-player-name').textContent=G.name;
+  document.getElementById('hub-player-rank').textContent=getRank().name;
+  document.getElementById('hub-momentum-fill').style.width=(G.momentum/G.maxMomentum*100)+'%';
+  document.getElementById('hub-score-display').textContent=(G.score||0).toLocaleString();
+  document.getElementById('hub-badges-row').innerHTML=BADGES.map(b=>{const earned=G.earnedBadges.includes(b.id);return '<div class="badge-pill '+(earned?'earned':'')+'"><span class="badge-icon">'+b.icon+'</span>'+b.name+'</div>';}).join('');
+  document.getElementById('chapter-list').innerHTML=CHAPTERS.map((ch,idx)=>{
+    const completed=G.completedChapters.includes(ch.id);
+    const locked=idx>0&&!G.completedChapters.includes(CHAPTERS[idx-1]?.id);
+    const available=!completed&&!locked;
+    const status=completed?'completed':locked?'locked':'available';
+    return '<div class="unit-card '+status+'" '+(available?'onclick="openChapter('+idx+')"':'')+'>'+
+      '<div class="unit-card-header"><div class="unit-icon">'+ch.icon+'</div><div class="unit-info"><div class="unit-number">Chapter '+ch.num+'</div><div class="unit-name">'+ch.title+'</div><div class="unit-desc">'+ch.period+'</div></div>'+
+      '<div class="unit-status '+status+'">'+(completed?'Complete':locked?'Locked':'Available')+'</div></div>'+
+      '<div class="unit-progress-bar"><div class="unit-progress-fill" style="width:'+(completed?100:0)+'%"></div></div></div>';
+  }).join('');
+}
+function openChapter(idx){
+  const ch=CHAPTERS[idx];
+  if(G.completedChapters.includes(ch.id)||(idx>0&&!G.completedChapters.includes(CHAPTERS[idx-1]?.id)))return;
+  currentChapterIdx=idx;
+  document.getElementById('chapter-num-display').textContent='CHAPTER '+ch.num;
+  document.getElementById('chapter-name-display').textContent=ch.title;
+  document.getElementById('chapter-period-display').textContent=ch.period;
+  document.getElementById('chapter-context').textContent=ch.context;
+  document.getElementById('chapter-standards-display').innerHTML=ch.standards.map(s=>'<span class="std-tag">'+s+'</span>').join('')+'<div style="margin-top:6px;font-family:var(--dm);font-size:9px;color:var(--text3)">EOC Focus: '+ch.eocFocus+'</div>';
+  document.getElementById('chapter-key-vocab').innerHTML=ch.keyVocab.map(v=>'<div style="background:var(--bg3);border:1px solid var(--border);padding:8px"><div style="font-family:var(--bebas);font-size:11px;color:var(--amber);letter-spacing:1px">'+v.term+'</div><div style="font-family:var(--crimson);font-size:13px;color:var(--text2);margin-top:2px">'+v.def+'</div></div>').join('');
+  document.getElementById('chapter-intro-scene').innerHTML='<div style="height:160px">'+(SCENES[ch.beats[0]?.scene]||'')+'</div>';
+  showScreen('chapter-intro');
+}
+function startChapter(){currentBeatIdx=0;chapterScore=0;chapterCorrect=0;chapterTotal=0;chapterLog=[];loadBeat();showScreen('story-screen');}
+function loadBeat(){
+  const ch=CHAPTERS[currentChapterIdx];const beat=ch.beats[currentBeatIdx];
+  answeredCurrent=false;
+  document.getElementById('beat-progress').innerHTML=ch.beats.map((_,i)=>'<div class="beat-pip '+(i<currentBeatIdx?'done':i===currentBeatIdx?'current':'')+'"></div>').join('');
+  document.getElementById('story-scene-art').innerHTML=SCENES[beat.scene]||'<div style="height:220px;background:var(--bg2);display:flex;align-items:center;justify-content:center;color:var(--text3);font-family:var(--crimson);font-style:italic">'+beat.location+'</div>';
+  document.getElementById('story-location').textContent=beat.location;
+  document.getElementById('story-year').textContent=beat.date;
+  document.getElementById('story-char-name').textContent=G.name+' - '+getRank().name;
+  document.getElementById('story-narrative').textContent=beat.narrative+(beat.charVoice?'\n\n'+beat.charVoice:'');
+  updateMomentumDisplay();
+  document.getElementById('decision-header').textContent=beat.decision;
+  const letters=['A','B','C','D'];
+  const shuffled=[...beat.choices];
+  for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+  window._currentShuffled=shuffled;
+  document.getElementById('choices-container').innerHTML=shuffled.map((c,i)=>'<button class="choice-btn" id="choice-'+i+'" onclick="selectChoice('+i+')"><span class="choice-letter">'+letters[i]+'.</span><span class="choice-text">'+c.text+'</span></button>').join('');
+  const fp=document.getElementById('feedback-panel');fp.className='feedback-panel';fp.innerHTML='';
+  document.getElementById('next-btn').style.display='none';
+}
+function selectChoice(idx){
+  if(answeredCurrent)return;answeredCurrent=true;chapterTotal++;G.totalAnswers++;
+  const ch=CHAPTERS[currentChapterIdx];const beat=ch.beats[currentBeatIdx];
+  const choices=window._currentShuffled||beat.choices;const choice=choices[idx];
+  choices.forEach((c,i)=>{const btn=document.getElementById('choice-'+i);if(btn){if(c.correct)btn.classList.add('correct');else if(i===idx&&!c.correct)btn.classList.add('incorrect');btn.onclick=null;}});
+  const fp=document.getElementById('feedback-panel');const isCorrect=choice.correct;
+  chapterLog.push({question:beat.decision,chosen:choice.text,correct:isCorrect,correctAnswer:(choices.find(c=>c.correct)||{}).text||'',feedback:choice.feedback,standard:choice.std});
+  if(isCorrect){
+    chapterCorrect++;G.correctAnswers++;G.score+=200;G.gold+=50;chapterScore+=200;
+    G.momentum=Math.min(G.maxMomentum,G.momentum+8);
+    fp.className='feedback-panel show correct';
+    fp.innerHTML='<div class="feedback-verdict correct">CORRECT - +200 PTS - +50 GOLD</div><div class="feedback-text">'+choice.feedback+'</div><div class="feedback-standard">Standard: <strong>'+choice.std+'</strong> | '+ch.eocFocus+'</div>';
+    notify('+200 pts - +50 gold','green');
+  }else{
+    G.score=Math.max(0,G.score-100);G.gold=Math.max(0,G.gold-20);
+    G.momentum=Math.max(0,G.momentum-25);chapterScore=Math.max(0,chapterScore-100);
+    fp.className='feedback-panel show incorrect';
+    const correctText=((choices.find(c=>c.correct)||{}).text||'').substring(0,80);
+    fp.innerHTML='<div class="feedback-verdict incorrect">INCORRECT - -100 PTS</div><div class="feedback-text">'+choice.feedback+'</div><div class="feedback-standard">Standard: <strong>'+choice.std+'</strong> | Correct: <em>'+correctText+'...</em></div>';
+    notify('-100 pts','red');
+  }
+  const pips=document.getElementById('beat-progress').querySelectorAll('.beat-pip');
+  if(pips[currentBeatIdx])pips[currentBeatIdx].classList.add('done');
+  updateMomentumDisplay();updateHUD();save();checkLevelUp();
+  document.getElementById('next-btn').style.display='block';
+  document.getElementById('next-btn').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function updateMomentumDisplay(){
+  const pct=(G.momentum/G.maxMomentum*100);
+  document.getElementById('story-momentum-fill').style.width=pct+'%';
+  document.getElementById('story-momentum-val').textContent=G.momentum+'/'+G.maxMomentum;
+  document.getElementById('story-momentum-fill').style.background=pct>60?'linear-gradient(90deg,var(--amber2),var(--amber3))':pct>30?'linear-gradient(90deg,#d35400,#f39c12)':'linear-gradient(90deg,var(--red),var(--red2))';
+}
+function nextStoryBeat(){const ch=CHAPTERS[currentChapterIdx];currentBeatIdx++;if(currentBeatIdx>=ch.beats.length)completeChapter();else{loadBeat();window.scrollTo(0,0);}}
+function completeChapter(){
+  const ch=CHAPTERS[currentChapterIdx];
+  if(!G.completedChapters.includes(ch.id))G.completedChapters.push(ch.id);
+  if(!G.timelineUnlocked)G.timelineUnlocked=[];
+  if(ch.timelineEntry&&!G.timelineUnlocked.includes(ch.timelineEntry.figure))G.timelineUnlocked.push(ch.timelineEntry.figure);
+  if(ch.cardEarned&&!G.unlockedCards.includes(ch.cardEarned))G.unlockedCards.push(ch.cardEarned);
+  if(ch.badge&&!G.earnedBadges.includes(ch.badge))G.earnedBadges.push(ch.badge);
+  G.chapterReports[ch.id]={chapterScore,chapterCorrect,chapterTotal,momentum:G.momentum,log:chapterLog};
+  checkAchievements();save();setTimeout(()=>pushLeaderboard(),1000);
+  const acc=chapterTotal>0?Math.round(chapterCorrect/chapterTotal*100):0;
+  document.getElementById('ch-complete-badge').textContent=ch.icon;
+  document.getElementById('ch-complete-title').textContent=ch.title;
+  document.getElementById('ch-complete-score').textContent='+'+chapterScore+' PTS - '+acc+'% ACCURACY';
+  const cardEl=document.getElementById('ch-card-earned');
+  if(ch.cardEarned){const card=CARDS.find(c=>c.id===ch.cardEarned);if(card){document.getElementById('ch-card-figure').textContent=card.figure;document.getElementById('ch-card-name').textContent=card.name;document.getElementById('ch-card-desc').textContent=card.desc;cardEl.style.display='block';}}else{cardEl.style.display='none';}
+  const quotes=[
+    '"Yesterday, December 7, 1941 - a date which will live in infamy." - FDR',
+    '"We shall fight on the beaches. We shall never surrender." - Churchill',
+    '"I fear all we have done is to awaken a sleeping giant." - attributed to Yamamoto',
+    '"Now I am become Death, the destroyer of worlds." - Oppenheimer, 1945',
+    '"The only thing we have to fear is fear itself." - FDR, 1933',
+    '"The world must be made safe for democracy." - Wilson, often quoted in WWII',
+  ];
+  document.getElementById('ch-complete-quote').textContent=quotes[currentChapterIdx%quotes.length];
+  document.getElementById('chapter-complete-overlay').classList.add('show');
+  document.getElementById('chapter-complete-overlay').scrollTop=0;
+}
+function finishChapter(){document.getElementById('chapter-complete-overlay').classList.remove('show');renderHub();showScreen('hub-screen');}
+function checkLevelUp(){if(!G)return;const rank=getRank();if(rank.level>G.level){G.level=rank.level;notify('Level Up! Now: '+rank.name,'green');}}
+function checkAchievements(){
+  const add=(id)=>{if(!G.earnedBadges.includes(id)){G.earnedBadges.push(id);const b=BADGES.find(x=>x.id===id);if(b)notify('Badge: '+b.name);}};
+  if(G.completedChapters.length>=1)add('first_briefing');
+  CHAPTERS.forEach(ch=>{if(G.completedChapters.includes(ch.id)&&ch.badge)add(ch.badge);});
+  if(G.completedChapters.length>=CHAPTERS.length)add('unit_complete');
+  if(G.unlockedCards.length>=CARDS.length)add('historian');
+  if(G.score>=1000)add('score_1000');if(G.score>=5000)add('score_5000');
+  if(chapterTotal>0&&chapterCorrect===chapterTotal)add('perfect_chapter');
+}
+function openProfile(){
+  if(!G)return;
+  const av=AVATARS.find(a=>a.id===G.avatarId);
+  document.getElementById('profile-avatar-large').innerHTML='<div style="width:90px;height:90px;margin:0 auto">'+(av?makeAvatar(av.id):'')+'</div><div style="font-family:var(--playfair);font-size:18px;color:var(--cream);font-style:italic;margin-top:8px">'+G.name+'</div><div style="font-family:var(--dm);font-size:11px;color:var(--teal)">'+getRank().name+'</div>';
+  const acc=G.totalAnswers>0?Math.round(G.correctAnswers/G.totalAnswers*100):0;
+  document.getElementById('profile-stat-grid').innerHTML=[{val:G.score.toLocaleString(),lbl:'Total Score'},{val:'Lv.'+getRank().level,lbl:'Level'},{val:acc+'%',lbl:'Accuracy'},{val:G.completedChapters.length+'/'+CHAPTERS.length,lbl:'Chapters'}].map(s=>'<div class="profile-stat"><div class="profile-stat-val">'+s.val+'</div><div class="profile-stat-lbl">'+s.lbl+'</div></div>').join('');
+  document.getElementById('profile-outfit-grid').innerHTML=OUTFITS.map(o=>{const locked=o.unlockChapter&&G.completedChapters.length<o.unlockChapter;return '<div class="outfit-opt '+(G.outfitId===o.id?'selected':'')+' '+(locked?'locked':'')+'" onclick="equipOutfit(\''+o.id+'\')"><div class="outfit-icon">'+o.icon+'</div><div class="outfit-name">'+o.name+'</div><div class="outfit-cost">'+(locked?'Locked':(G.outfitId===o.id?'Worn':'Equip'))+'</div></div>';}).join('');
+  document.getElementById('profile-badge-grid').innerHTML=BADGES.map(b=>{const earned=G.earnedBadges.includes(b.id);return '<div class="badge-item '+(earned?'earned':'')+'"><div class="badge-item-icon">'+b.icon+'</div><div class="badge-item-name">'+b.name+'</div></div>';}).join('');
+  document.getElementById('profile-card-grid').innerHTML=CARDS.map(c=>{const unlocked=G.unlockedCards.includes(c.id);return '<div class="coll-card '+(unlocked?'unlocked':'')+'"><div class="coll-card-figure">'+c.figure+'</div><div class="coll-card-name">'+(unlocked?c.name:'???')+'</div><div class="coll-card-desc">'+(unlocked?c.desc:'Complete chapters to unlock')+'</div>'+(unlocked?'<div style="font-family:var(--crimson);font-size:12px;color:var(--amber);font-style:italic;margin-top:6px;border-top:1px solid var(--border);padding-top:6px">'+c.quote+'</div>':'')+'</div>';}).join('');
+  document.getElementById('profile-overlay').classList.add('show');
+}
+function closeProfile(){document.getElementById('profile-overlay').classList.remove('show');}
+function equipOutfit(id){
+  if(!G.unlockedOutfits)G.unlockedOutfits=['civilian'];
+  if(!G.unlockedOutfits.includes(id))G.unlockedOutfits.push(id);
+  G.outfitId=id;save();
+  const av=AVATARS.find(a=>a.id===G.avatarId);const svg=av?makeAvatar(av.id):'';
+  document.getElementById('hud-avatar-el').innerHTML='<div style="width:42px;height:42px">'+svg+'</div>';
+  document.getElementById('hub-avatar').innerHTML='<div style="width:60px;height:60px">'+svg+'</div>';
+  if(document.getElementById('profile-overlay').classList.contains('show'))openProfile();
+  notify('Outfit equipped!','green');
+}
+function openCardCollection(){
+  if(!G)return;
+  document.getElementById('cardcoll-grid').innerHTML=CARDS.map(c=>{const unlocked=G.unlockedCards.includes(c.id);return '<div class="coll-card '+(unlocked?'unlocked':'')+'"><div class="coll-card-figure">'+c.figure+'</div><div class="coll-card-name">'+(unlocked?c.name:'???')+'</div><div class="coll-card-desc">'+(unlocked?c.desc:'Complete chapters to unlock this card')+'</div>'+(unlocked?'<div style="font-family:var(--crimson);font-size:12px;color:var(--amber);font-style:italic;margin-top:6px;border-top:1px solid var(--border);padding-top:6px">'+c.quote+'</div>':'')+'</div>';}).join('');
+  document.getElementById('cardcoll-overlay').classList.add('show');
+}
+function openTimeline(){
+  if(!G)return;if(!G.timelineUnlocked)G.timelineUnlocked=[];
+  const allEntries=CHAPTERS.filter(ch=>ch.timelineEntry).map(ch=>ch.timelineEntry);
+  const unlocked=allEntries.filter(e=>G.timelineUnlocked.includes(e.figure));
+  document.getElementById('tl-progress').textContent=unlocked.length+'/'+allEntries.length+' events unlocked';
+  document.getElementById('tl-track').innerHTML=allEntries.map(entry=>{
+    const isUnlocked=G.timelineUnlocked.includes(entry.figure);
+    return '<div style="position:relative;margin-bottom:14px;padding-left:30px"><div style="position:absolute;left:8px;top:8px;width:10px;height:10px;border:2px solid '+(isUnlocked?'var(--amber)':'var(--border)')+';background:'+(isUnlocked?'var(--amber)':'var(--bg2)')+'"></div><div style="background:var(--bg2);border:1px solid '+(isUnlocked?'var(--border2)':'var(--border)')+';padding:10px 12px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><div style="font-family:var(--bebas);font-size:12px;color:var(--teal);min-width:40px">'+entry.year+'</div><div style="font-size:18px">'+(isUnlocked?entry.sprite:'?')+'</div><div style="font-family:var(--playfair);font-size:13px;color:'+(isUnlocked?'var(--cream)':'var(--text3)')+';font-style:italic">'+(isUnlocked?entry.title:'??? LOCKED')+'</div></div>'+(isUnlocked?'<div style="font-family:var(--crimson);font-size:14px;color:var(--text2);line-height:1.5">'+entry.desc+'</div>':'<div style="font-family:var(--crimson);font-size:13px;color:var(--text3);font-style:italic">Complete the chapter to unlock.</div>')+'</div></div>';
+  }).join('');
+  document.getElementById('timeline-overlay').classList.add('show');
+}
+async function loadTeacherData(){
+  try{
+    const res=await fetch(SUPA_URL+'/rest/v1/scores?game=eq.arsenal_democracy&order=score.desc&limit=500',{headers:SUPA_HEADERS});
+    const all=await res.json();window._tdStudents=all;
+    const myTeacher=G.teacher||'olson';
+    const students=all.filter(s=>!s.isTeacher&&s.teacher===myTeacher);
+    const periods=[...new Set(students.map(s=>s.period?.split('-').pop()).filter(Boolean))].sort();
+    document.getElementById('td-period-tabs').innerHTML=[{id:'all',label:'All'},...periods.map(p=>({id:myTeacher+'-'+p,label:'Period '+p}))].map(t=>'<div class="lb-tab" onclick="renderTeacherView(window._tdStudents,\''+t.id+'\')" style="cursor:pointer">'+t.label+'</div>').join('');
+    renderTeacherView(all,'all');
+    document.getElementById('td-sync-status').textContent='Last synced: '+new Date().toLocaleTimeString();
+  }catch(e){document.getElementById('td-sync-status').textContent='Error: '+e.message;}
+}
+function renderTeacherView(all,period){
+  const myTeacher=G.teacher||'olson';
+  let students=all.filter(s=>!s.isTeacher);
+  const everyone=period&&period!=='all'?students.filter(s=>s.period===period):students.filter(s=>s.teacher===myTeacher);
+  const avgScore=everyone.length?Math.round(everyone.reduce((a,s)=>a+(s.score||0),0)/everyone.length):0;
+  const avgCh=everyone.length?Math.round(everyone.reduce((a,s)=>a+(s.chapters||0),0)/everyone.length):0;
+  const completed=everyone.filter(s=>(s.chapters||0)>=CHAPTERS.length).length;
+  document.getElementById('td-summary').innerHTML=[{icon:'&#128101;',val:everyone.length,lbl:'Students'},{icon:'&#11088;',val:avgScore.toLocaleString(),lbl:'Avg Score'},{icon:'&#128214;',val:avgCh+'/'+CHAPTERS.length,lbl:'Avg Chapters'},{icon:'&#127942;',val:completed,lbl:'Finished Unit'}].map(s=>'<div style="background:var(--bg2);border:1px solid var(--border2);padding:12px;text-align:center"><div style="font-size:22px;margin-bottom:4px">'+s.icon+'</div><div style="font-family:var(--bebas);font-size:22px;color:var(--amber)">'+s.val+'</div><div style="font-family:var(--dm);font-size:8px;color:var(--text3);margin-top:2px;letter-spacing:1px">'+s.lbl+'</div></div>').join('');
+  const barsEl=document.getElementById('td-chapter-bars');
+  if(barsEl){barsEl.innerHTML=CHAPTERS.map((ch,i)=>{const reached=everyone.filter(s=>(s.chapters||0)>i).length;const pct=everyone.length?Math.round(reached/everyone.length*100):0;const barColor=pct>=75?'var(--green2)':pct>=50?'var(--amber)':'var(--red2)';return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><div style="font-family:var(--dm);font-size:9px;color:var(--text2);width:100px;flex-shrink:0">Ch.'+ch.num+' '+ch.title.substring(0,12)+'</div><div style="flex:1;height:14px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+barColor+';border-radius:2px"></div></div><div style="font-family:var(--bebas);font-size:12px;color:'+barColor+';min-width:36px;text-align:right">'+pct+'%</div><div style="font-family:var(--dm);font-size:8px;color:var(--text3);min-width:50px">'+reached+'/'+everyone.length+'</div></div>';}).join('');}
+  const rosterEl=document.getElementById('td-roster');
+  if(rosterEl){
+    if(!everyone.length){rosterEl.innerHTML='<div style="font-family:var(--crimson);color:var(--text3);font-style:italic;padding:12px">No entries found.</div>';return;}
+    const sorted=[...everyone].sort((a,b)=>(b.score||0)-(a.score||0));
+    rosterEl.innerHTML='<table class="lb-table" style="margin-bottom:20px"><thead><tr><th>#</th><th>STUDENT</th><th>PD</th><th>SCORE</th><th>DONE%</th><th>CORRECT%</th><th>GRADE%</th><th>LAST</th></tr></thead><tbody>'+sorted.map((s,i)=>{
+      const lastSeen=s.updatedAt?new Date(s.updatedAt).toLocaleDateString():'-';
+      const chPct=Math.round((s.chapters||0)/CHAPTERS.length*100);
+      const acc=s.totalAnswers>0?Math.round((s.correctAnswers||0)/s.totalAnswers*100):null;
+      const grade=acc===null?'-':Math.round(chPct*0.5+acc*0.5)+'%';
+      const gradeVal=acc===null?0:Math.round(chPct*0.5+acc*0.5);
+      const gradeColor=acc===null?'var(--text3)':gradeVal>=90?'var(--green2)':gradeVal>=80?'var(--teal)':gradeVal>=70?'var(--amber)':'var(--red2)';
+      const bar='<div style="display:inline-block;width:40px;height:4px;background:rgba(255,255,255,0.1);border-radius:2px;vertical-align:middle;margin-left:4px"><div style="width:'+chPct+'%;height:100%;background:var(--amber2);border-radius:2px"></div></div>';
+      return '<tr><td style="font-family:var(--dm);font-size:10px;color:var(--text3)">'+(i+1)+'</td><td><div class="lb-name">'+(s.name||'-')+'</div><div style="font-size:9px;color:var(--teal)">'+(s.rank||'')+'</div></td><td style="font-family:var(--dm);font-size:10px;color:var(--text2)">'+(s.period==='T'?'Teacher':('Pd '+(s.period||'?').split('-').pop()))+'</td><td class="lb-score">'+((s.score||0).toLocaleString())+'</td><td style="font-family:var(--dm);font-size:10px;color:var(--text2)">'+chPct+'%'+bar+'</td><td style="font-family:var(--dm);font-size:10px;color:var(--amber)">'+(acc!==null?acc+'%':'-')+'</td><td style="font-family:var(--bebas);font-size:14px;color:'+gradeColor+'">'+grade+'</td><td style="font-family:var(--dm);font-size:9px;color:var(--text3)">'+lastSeen+'</td><td><button onclick="deleteStudent(\''+s.name+'\',\''+s.period+'\')" style="font-family:var(--bebas);font-size:10px;background:transparent;border:1px solid var(--red2);color:var(--red2);padding:3px 8px;cursor:pointer">X</button></td></tr>';
+    }).join('')+'</tbody></table>';
+  }
+}
+async function deleteStudent(name,period){
+  if(!confirm('Remove "'+name+'" from the leaderboard?'))return;
+  try{await fetch(SUPA_URL+'/rest/v1/scores?name=eq.'+encodeURIComponent(name)+'&period=eq.'+encodeURIComponent(period)+'&game=eq.arsenal_democracy',{method:'DELETE',headers:SUPA_HEADERS});notify(name+' removed','green');loadTeacherData();}catch(e){notify('Error removing student','red');}
+}
+async function resetAllScores(){
+  if(!confirm('Reset ALL leaderboard scores for Arsenal of Democracy? This cannot be undone.'))return;
+  if(!confirm('Are you sure? Every student score will be deleted.'))return;
+  try{await fetch(SUPA_URL+'/rest/v1/scores?game=eq.arsenal_democracy',{method:'DELETE',headers:SUPA_HEADERS});notify('Leaderboard reset!','green');loadTeacherData();}catch(e){notify('Error resetting','red');}
+}
+function openTeacherDashboard(){document.getElementById('teacher-dashboard').classList.add('show');loadTeacherData();}
+function replayGame(){
+  if(!G)return;
+  if(!confirm('Reset all chapters and play again? Your score, gold, and badges are kept.'))return;
+  G.completedChapters=[];G.chapterReports={};G.timelineUnlocked=[];G.momentum=70;
+  save();renderHub();showScreen('hub-screen');notify('Chapters reset. Good luck!','green');
+}
+window.addEventListener('DOMContentLoaded',init);
+
+
+</script>
+</body>
+</html>
