@@ -1160,7 +1160,7 @@ function renderHub(){
     const status=completed?'completed':locked?'locked':'available';
     return '<div class="unit-card '+status+'" '+(available?'onclick="openChapter('+idx+')"':'')+'>'+
       '<div class="unit-card-header"><div class="unit-icon">'+ch.icon+'</div><div class="unit-info"><div class="unit-number">Chapter '+ch.num+'</div><div class="unit-name">'+ch.title+'</div><div class="unit-desc">'+ch.period+'</div></div>'+
-      '<div class="unit-status '+status+'">'+(completed?'Complete':locked?'Locked':'Available')+'</div></div>'+
+      '<div class="unit-status '+status+'">'+(completed?'Complete':locked?'Locked':'')+'</div></div>'+
       '<div class="unit-progress-bar"><div class="unit-progress-fill" style="width:'+(completed?100:0)+'%"></div></div></div>';
   }).join('');
 }
