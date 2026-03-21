@@ -229,12 +229,30 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
     <div style="flex:1"><div class="hub-player-name" id="hub-player-name">Historian</div><div class="hub-player-rank" id="hub-player-rank">Curious Citizen</div><div class="hub-momentum-wrap"><div class="hub-momentum-fill" id="hub-momentum-fill" style="width:70%"></div></div></div>
     <div style="text-align:right"><div style="font-family:var(--bebas);font-size:22px;color:var(--amber)" id="hub-score-display">0</div><div style="font-family:var(--dm);font-size:8px;color:var(--text3)">TOTAL SCORE</div></div>
   </div>
+  <!-- Teacher button — shown only for teacher logins -->
+  <div id="teacher-btn-wrap" style="display:none;margin-bottom:10px">
+    <button class="btn full" style="border-color:var(--teal);color:var(--teal)" onclick="document.getElementById('teacher-dashboard').classList.add('show');loadTeacherData()"><span>📊 Teacher Dashboard</span></button>
+  </div>
+  <!-- SHELL INTEGRATION: Return to hub — only shown when launched from shell -->
+  <div id="shell-return-btn" style="display:none;margin-bottom:12px">
+    <button class="btn full" onclick="returnToShell()" style="border-color:var(--teal);color:var(--teal);">
+      <span>← Return to American Chronicles Hub</span>
+    </button>
+  </div>
   <div class="badges-row" id="hub-badges-row"></div>
   <div class="section-head">Unit 5A - World War II</div>
   <div id="chapter-list"></div>
   <div style="margin-top:16px;background:var(--bg2);border:1px solid var(--border);padding:14px;">
     <div style="font-family:var(--bebas);font-size:11px;color:var(--text3);letter-spacing:2px;margin-bottom:8px">UNIT FOCUS QUESTION</div>
     <div style="font-family:var(--playfair);font-size:15px;color:var(--cream);font-style:italic;line-height:1.5">"When is war justified - and what obligations does a powerful nation owe the world?"</div>
+  </div>
+  <!-- SHELL INTEGRATION: shown in completion state when all chapters done -->
+  <div id="journey-banner" style="display:none;background:rgba(56,160,80,0.08);border:1px solid var(--green);padding:14px;margin-top:12px;text-align:center">
+    <div style="font-family:var(--bebas);font-size:18px;color:var(--green2);letter-spacing:2px;margin-bottom:6px">UNIT 5A COMPLETE</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn green sm" onclick="replayGame()"><span>↺ Replay</span></button>
+      <button class="btn sm" id="journey-shell-btn" style="display:none;border-color:var(--teal);color:var(--teal);" onclick="returnToShell()"><span>🏛️ Return to Hub</span></button>
+    </div>
   </div>
   <button class="btn full" style="margin-top:12px;border-color:var(--border2);color:var(--text2);font-size:11px" onclick="replayGame()"><span>Replay from Beginning</span></button>
 </div>
@@ -312,7 +330,6 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       <div style="font-family:var(--crimson);font-size:14px;color:var(--text2);font-style:italic;margin-bottom:20px">Who is your US History teacher?</div>
       <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px">
         <div onclick="selectTeacher('olson')" style="padding:14px;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg3)"><div style="font-family:var(--bebas);font-size:20px;color:var(--amber)">Mr. Olson</div></div>
-        <div onclick="selectTeacher('smith')" style="padding:14px;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg3)"><div style="font-family:var(--bebas);font-size:20px;color:var(--amber)">Mrs. Smith</div></div>
         <div onclick="selectTeacher('guest')" style="padding:14px;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg3)"><div style="font-family:var(--bebas);font-size:16px;color:var(--text2)">Guest / Other</div></div>
       </div>
       <button class="btn full" style="border-color:var(--border2);color:var(--text3);font-size:11px" onclick="document.getElementById('code-gate-overlay').style.display='none'"><span>Cancel</span></button>
@@ -348,6 +365,8 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
       <div style="font-family:var(--crimson);font-size:15px;color:var(--text2);font-style:italic;line-height:1.6" id="ch-complete-quote"></div>
     </div>
     <button class="btn full" onclick="finishChapter()"><span>Return to Hub</span></button>
+    <!-- SHELL INTEGRATION: return to shell when unit is fully complete -->
+    <button class="btn full" id="completion-shell-btn" style="display:none;margin-top:4px;border-color:var(--teal);color:var(--teal);" onclick="returnToShell()"><span>🏛️ Return to American Chronicles</span></button>
   </div>
 </div>
 <div id="bottom-nav">
@@ -356,6 +375,8 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   <button class="bn-btn" onclick="openProfile()"><span class="bn-icon">&#127894;</span>Profile</button>
   <button class="bn-btn" onclick="openTimeline()"><span class="bn-icon">&#128197;</span>Timeline</button>
   <button class="bn-btn" onclick="openCardCollection()"><span class="bn-icon">&#127183;</span>Cards</button>
+  <!-- SHELL INTEGRATION: shown only when launched from shell -->
+  <button class="bn-btn" id="shell-nav-btn" style="display:none;color:var(--teal);" onclick="returnToShell()"><span class="bn-icon">🏛️</span>Hub</button>
 </div>
 </div>
 <script>
@@ -366,7 +387,53 @@ const SAVE_KEY='arsenal_democracy_v1';
 const SUPA_URL='https://iluvuartxsenbgylogit.supabase.co';
 const SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlsdXZ1YXJ0eHNlbmJneWxvZ2l0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NjA2OTIsImV4cCI6MjA4OTQzNjY5Mn0.stAmdi5xy7ofDAB4AiRg78Eoky-7FXZEa-Ui1dgwHd0';
 const SUPA_HEADERS={'Content-Type':'application/json','apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY};
-const TEACHERS={'olson':{name:'Mr. Olson',periods:['3','5','6'],teacherCode:'OLSON219'},'smith':{name:'Mrs. Smith',periods:['1','2','3','4','6','7'],teacherCode:'SMITH225'}};
+const TEACHERS={'olson':{name:'Mr. Olson',periods:['1','2','3','4','5','6','7'],teacherCode:'OLSON219'}};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  AMERICAN CHRONICLES SHELL INTEGRATION
+// ═══════════════════════════════════════════════════════════════════════
+const SHELL_KEY     = 'ac_shell_state';
+const SHELL_UNIT_ID = 'unit5a';
+
+function getShellProfile() {
+  try {
+    const raw = localStorage.getItem(SHELL_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    if (p && p.name && p.name !== 'Guest') return p;
+  } catch(e) {}
+  return null;
+}
+
+function applyShellProfile(profile) {
+  G = newGame();
+  G.name      = profile.name;
+  G.period    = profile.period ? ('shell-' + profile.period) : 'shell-0';
+  G.teacher   = 'shell';
+  G.isTeacher = profile.isTeacher || false;
+  const avatarMap = {
+    scholar:'advisor', rebel:'civil_rights', soldier:'soldier',
+    reporter:'war_correspondent', pioneer:'advisor', diplomat:'diplomat',
+    worker:'factory_worker', artist:'war_correspondent',
+  };
+  G.avatarId = avatarMap[profile.avatar] || 'advisor';
+  save();
+}
+
+function notifyShellComplete() {
+  try {
+    const raw = localStorage.getItem(SHELL_KEY);
+    if (!raw) return;
+    const s = JSON.parse(raw);
+    if (!s.unitsCompleted) s.unitsCompleted = [];
+    if (!s.unitsCompleted.includes(SHELL_UNIT_ID)) s.unitsCompleted.push(SHELL_UNIT_ID);
+    localStorage.setItem(SHELL_KEY, JSON.stringify(s));
+  } catch(e) {}
+}
+
+function returnToShell() {
+  window.location.href = 'https://olsonjoshua-code.github.io/American-Chronicles-Shell/';
+}
 let G=null,currentChapterIdx=0,currentBeatIdx=0,chapterScore=0,chapterCorrect=0,chapterTotal=0,answeredCurrent=false,chapterLog=[];
 
 const AVATAR_ERAS=[{id:'leadership',label:'Leadership'},{id:'homefront',label:'Home Front'},{id:'military',label:'Military'},{id:'press',label:'Press & Diplomacy'}];
@@ -957,8 +1024,28 @@ function init(){
     pct+=Math.random()*20;if(pct>=100){pct=100;clearInterval(iv);
       setTimeout(()=>{
         const ls=document.getElementById('loading-screen');ls.style.opacity='0';setTimeout(()=>ls.style.display='none',500);
-        if(load()&&G&&G.name)document.getElementById('btn-continue').style.display='block';
         document.getElementById('title-scene-art').innerHTML=SCENES.title_wwii||'';
+
+        // ── SHELL INTEGRATION: auto-login if shell profile exists ──
+        const shellProfile = getShellProfile();
+        if (shellProfile) {
+          if (load() && G && G.name && G.teacher === 'shell') {
+            showGameUI(); renderHub(); showScreen('hub-screen');
+            notify('Welcome back, ' + G.name + '!', 'green');
+          } else {
+            applyShellProfile(shellProfile);
+            if (shellProfile.isTeacher) {
+              showGameUI(); renderHub(); showScreen('hub-screen');
+              notify('Welcome, ' + shellProfile.name + '! 📊', 'green');
+            } else {
+              showCharScreen();
+              notify('Welcome, ' + shellProfile.name + '! Profile loaded from hub.', 'green');
+            }
+          }
+          return;
+        }
+        // ── No shell profile — normal standalone login ──
+        if(load()&&G&&G.name)document.getElementById('btn-continue').style.display='block';
       },200);
     }
     bar.style.width=Math.min(100,pct)+'%';
@@ -1040,10 +1127,25 @@ function confirmCharacter(){
 function showGameUI(){
   document.getElementById('game-header').style.display='block';
   document.getElementById('bottom-nav').style.display='grid';
+  // ── SHELL INTEGRATION: reveal return buttons if launched from shell ──
+  if (getShellProfile()) {
+    const retBtn = document.getElementById('shell-return-btn');
+    if (retBtn) retBtn.style.display = 'block';
+    const navBtn = document.getElementById('shell-nav-btn');
+    if (navBtn) navBtn.style.display = 'block';
+  }
   updateHUD();
 }
 function renderHub(){
   if(!G)return;
+  // teacher button
+  const teacherBtn=document.getElementById('teacher-btn-wrap');
+  if(teacherBtn)teacherBtn.style.display=G.isTeacher?'block':'none';
+  // ── SHELL INTEGRATION: reveal shell button ──
+  if (getShellProfile()) {
+    const journeyShellBtn=document.getElementById('journey-shell-btn');
+    if(journeyShellBtn)journeyShellBtn.style.display='inline-flex';
+  }
   const av=AVATARS.find(a=>a.id===G.avatarId);const svg=av?makeAvatar(av.id):'';
   document.getElementById('hub-avatar').innerHTML='<div style="width:60px;height:60px">'+svg+'</div>';
   document.getElementById('hub-player-name').textContent=G.name;
@@ -1162,7 +1264,16 @@ function checkAchievements(){
   const add=(id)=>{if(!G.earnedBadges.includes(id)){G.earnedBadges.push(id);const b=BADGES.find(x=>x.id===id);if(b)notify('Badge: '+b.name);}};
   if(G.completedChapters.length>=1)add('first_briefing');
   CHAPTERS.forEach(ch=>{if(G.completedChapters.includes(ch.id)&&ch.badge)add(ch.badge);});
-  if(G.completedChapters.length>=CHAPTERS.length)add('unit_complete');
+  if(G.completedChapters.length>=CHAPTERS.length){
+    add('unit_complete');
+    // ── SHELL INTEGRATION: write completion back to shell profile ──
+    notifyShellComplete();
+    // Show journey banner and shell return button on hub
+    const jb=document.getElementById('journey-banner');if(jb)jb.style.display='block';
+    // Show shell return button on chapter complete overlay
+    const shellBtn=document.getElementById('completion-shell-btn');
+    if(shellBtn&&getShellProfile())shellBtn.style.display='block';
+  }
   if(G.unlockedCards.length>=CARDS.length)add('historian');
   if(G.score>=1000)add('score_1000');if(G.score>=5000)add('score_5000');
   if(chapterTotal>0&&chapterCorrect===chapterTotal)add('perfect_chapter');
